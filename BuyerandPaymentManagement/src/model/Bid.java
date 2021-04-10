@@ -32,16 +32,9 @@ public class Bid {
 	}
 		
 	//Insert bids
-	/*SELECT `bid`.`bidid`,
-    `bid`.`itemCode`,
-    `bid`.`customerId`,
-    `bid`.`Amount`,
-    `bid`.`sConditions`,
-    `bid`.`dueDate`
-FROM `buyerandpaymentdb`.`bid`;*/
+	
 
-
-	public String insertBid(String itemCode, String customerId, String amount, String sConditions,Date dueDate) {
+	public String insertBid(String itemCode, String customerId, String amount, String sConditions,String dueDate) {
 	
 		String output = "";
 		try {
@@ -61,7 +54,7 @@ FROM `buyerandpaymentdb`.`bid`;*/
 			preparedStmt.setString(2, customerId);
 			preparedStmt.setDouble(3, Double.parseDouble(amount));
 			preparedStmt.setString(4, sConditions); 
-			preparedStmt.setDate(5, dueDate); 
+			preparedStmt.setString(5, dueDate); 
 
 			//execute the statement
 			preparedStmt.execute();
@@ -75,7 +68,7 @@ FROM `buyerandpaymentdb`.`bid`;*/
 		return output;
 	}
 
-		//Read all items
+		//Read all the bids
 		public String readBids() {
 			String output = "";
 			try {
@@ -112,7 +105,7 @@ FROM `buyerandpaymentdb`.`bid`;*/
 					output += "<td>" + specConditions +"</td>";
 					output += "<td>" +  dueDate  +"</td></tr>";
 		 
-					// buttons
+					/* buttons
 					output += "<td><form method='post' action='items.jsp'>  "
 												
 							+ "<input name='btnUpdate' type='submit' value='Update' class=\"btn btn-success\" >"
@@ -124,7 +117,7 @@ FROM `buyerandpaymentdb`.`bid`;*/
 							+ " type='submit' value='Remove' move' type='submit' value='Remove'\r\n"
 							+ " class='btn btn-danger'>"
 							+ "<input name='itemID' type='hidden' "
-							+ " value='" + bidId + "'>" + "</form></td></tr>";
+							+ " value='" + bidId + "'>" + "</form></td></tr>";*/
 				}
 				con.close();
 				// Complete the html table
@@ -137,52 +130,63 @@ FROM `buyerandpaymentdb`.`bid`;*/
 			return output;
 		}
 		
-		//select one item
-		public String getItem(int itemID) {
+		/*SELECT `bid`.`bidid`,
+	    `bid`.`itemCode`,
+	    `bid`.`customerId`,
+	    `bid`.`Amount`,
+	    `bid`.`sConditions`,
+	    `bid`.`dueDate`
+	FROM `buyerandpaymentdb`.`bid`;*/
+
+		//select one bid
+		public String getBid(String itemId, String customerId) {
 			String output = "";
 			
 			try {
 				Connection con = this.connect();
 				if (con == null) {
-					return "Error while connecting to get item for update";
+					return "Error while connecting to retrieve a specific bid";
 				}		
 				
-				String query = "select * from items where itemID = ?";
+				String query = "select * from bid where itemCode = ? and customerId = ?";
 				PreparedStatement preparedStatement = con.prepareStatement(query);
-				preparedStatement.setInt(1, itemID);
+				preparedStatement.setString(1, itemId);
+				preparedStatement.setString(2, customerId);
 				ResultSet rs = preparedStatement.executeQuery();
 				
-				if (rs.next()) {				
+				if (rs.next()) {	
+					String bidId = rs.getString("bidid");
 					String itemCode = rs.getString("itemCode");
-					String itemName = rs.getString("itemName");
-					String itemPrice = rs.getString("itemPrice");
-					String itemDesc = rs.getString("itemDesc");
-					
+					String customerID = rs.getString("customerId");
+					String amount = Double.toString(rs.getDouble("Amount"));
+					String specConditions = rs.getString("sConditions");
+					String dueDate = rs.getString("dueDate");
 					
 					output = "<form method='post' action='items.jsp'>";	
-					output += "<h2>Item ID : " + itemID + "</h2>";
+					output += "<h2>Bid ID: " + bidId + "</h2>";
 					output += "Item code: <input name=\"itemCode\" type=\"text\" value=\""+ itemCode + "\" class=\"form-control\"><br>";
-					output += "Item name: <input name=\"itemName\" type=\"text\" value=\""+ itemName + "\" class=\"form-control\"><br>";
-					output += "Item price: <input name=\"itemPrice\" type=\"text\" value=\""+ itemPrice + "\" class=\"form-control\"><br>";
-					output += "Item description: <input name=\"itemDesc\" type=\"text\" value=\""+ itemDesc + "\" class=\"form-control\"><br>";
-					output += "<input name='itemID' type='hidden' value='" + itemID + "'>";
-
-					output += "<input type=\"submit\" name=\"Update\" value=\"update\" class=\"btn btn-primary\"></form>";
+					output += "Customer Id: <input name=\"itemName\" type=\"text\" value=\""+ customerID + "\" class=\"form-control\"><br>";
+					output += "Bid Amount: <input name=\"itemPrice\" type=\"text\" value=\""+ amount + "\" class=\"form-control\"><br>";
+					output += "Special Conditions: <input name=\"itemDesc\" type=\"text\" value=\""+ specConditions + "\" class=\"form-control\"><br>";
+					output += "Due date: <input name=\"itemDesc\" type=\"text\" value=\""+ dueDate + "\" class=\"form-control\"><br>";
+					output += "<input name='itemID' type='hidden' value='" + bidId+ "'>";
+				
+				
 
 				}
 				
 				con.close();			
 				
 			} catch (Exception e) {
-				output = "Error while getting item ";
+				output = "Error while getting bid ";
 				System.err.println(e.getMessage());
 			}
 			
 			return output;
 		}
 		
-		//Update item details
-		public String updateItems(String id,String code, String name, String price, String desc) {
+		//Update bid details
+		public String updateBids(String bidId, String amount, String sConditions, String dueDate) {
 			String output = "";
 			
 			
@@ -193,15 +197,15 @@ FROM `buyerandpaymentdb`.`bid`;*/
 					return "Error while connecting to the database";
 				}
 				// create a prepared statement
-				String query = "update items set itemCode=?,itemName =?,itemPrice=?,itemDesc=? where itemID = ?";		
+				String query = "update bid set `Amount` = ? ,`sConditions` = ?,`dueDate` = ? where `bidid` = ?";		
 				PreparedStatement preparedStmt = con.prepareStatement(query);
+				
 				// binding values
 				
-				preparedStmt.setString(1, code);
-				preparedStmt.setString(2, name);
-				preparedStmt.setDouble(3, Double.parseDouble(price));
-				preparedStmt.setString(4, desc); 
-				preparedStmt.setInt(5, Integer.parseInt(id));
+				preparedStmt.setDouble(1, Double.parseDouble(amount));
+				preparedStmt.setString(2, sConditions);
+				preparedStmt.setString(3, dueDate); 
+				preparedStmt.setInt(4, Integer.parseInt(bidId));
 
 				//execute the statement
 				preparedStmt.executeUpdate();
@@ -217,10 +221,10 @@ FROM `buyerandpaymentdb`.`bid`;*/
 			
 		}
 		
-		//Delete an item
-		public String deleteItem (String itemId) {
+		//Delete a bid
+		public String deleteBid (String bidID) {
 			
-			int itemID = Integer.parseInt(itemId);
+			//int bidId = Integer.parseInt(bidID);
 			String output = "";
 			
 			try {
@@ -233,20 +237,20 @@ FROM `buyerandpaymentdb`.`bid`;*/
 				}
 		
 				// create a prepared statement		
-				String query = "delete from items where itemID = ?" ;							
+				String query = "delete from bid where bidid = ?" ;							
 				PreparedStatement preparedStmt = con.prepareStatement(query);
 				
 				// binding the value of itemID
-				preparedStmt.setInt(1, itemID);
+				preparedStmt.setString(1, bidID);
 		
 				//execute the statement
 				preparedStmt.execute();
 				con.close();
-				output = "Item id = " + itemID + " deleted successfully";
+				output = "Bid id = " + bidID + " deleted successfully";
 			} catch (Exception e)
 			{
 				output = "Error while inserting";
-				System.out.println(itemID);
+				System.out.println(bidID);
 				System.err.println(e.getMessage());
 			}
 			return output;
