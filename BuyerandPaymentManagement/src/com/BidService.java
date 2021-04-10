@@ -34,10 +34,18 @@ public class BidService {
 	
 	 
 	 @GET
-	 @Path("/bid/{itemId}/{customerId}")
-	
+	 @Path("/bid")
+	 @Consumes(MediaType.APPLICATION_JSON)
 	 @Produces(MediaType.TEXT_HTML)
-	 public String getBid(@PathParam(value = "itemId") String itemId,@PathParam(value = "customerId") String customerId) {
+	 public String getBid( String bidData) {
+		 
+		// Converting the input  to a JSON object
+		JsonObject bidDataJson = new JsonParser().parse(bidData).getAsJsonObject();
+		
+		// Read the values from the JSON object
+		String itemId = bidDataJson.get("itemCode").getAsString();
+		String customerId = bidDataJson.get("customerId").getAsString();
+		
 		 return bidObj.getBid(itemId, customerId);
 	 }
 	 
