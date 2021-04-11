@@ -17,6 +17,7 @@ public class ProductService {
 	@GET
 	@Path("/") 
 	@Produces(MediaType.TEXT_HTML) 
+	//call read all product method
 	public String readProduct() 
 	 { 
 		return productObj.readAllProduct();
