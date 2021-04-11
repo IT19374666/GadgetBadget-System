@@ -1,7 +1,7 @@
 package com;
 import model.Bid;
 
-import java.sql.Date;
+
 
 //For REST Service
 import javax.ws.rs.*;
@@ -62,7 +62,8 @@ public class BidService {
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "sConditions")String sConditions,
 			 @FormParam(value = "dueDate")String dueDate) {
-		 
+		 	System.out.println("IC" +itemCode);
+		 	System.out.println("Amount"+amount);
 		 	bidObj.insertBid(itemCode, customerId, amount, sConditions, dueDate);
 		 
 		 	
