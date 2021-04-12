@@ -8,7 +8,7 @@ public class Product {
 	 Connection con = null; 
 	 try
 	 { 
-	 Class.forName("com.mysql.jdbc.Driver"); 
+	 Class.forName("com.mysql.cj.jdbc.Driver"); 
 	 
 	 //Provide the correct details: DBServer/DBName, username, password 
 	 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/product_and_seller_management", "root", ""); 
@@ -19,6 +19,49 @@ public class Product {
 	 } 
 	 return con; 
 	 } 
+	
+	
+	////////////////insert item///////////////////////////////
+	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate) 
+	{ 
+		String output = "";
+
+		try
+		{ 
+			Connection con = connect(); 
+			if (con == null) 
+			{
+				return "Error while connecting to the database for inserting."; 
+			} 
+			// create a prepared statement
+			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`) "+
+			" values (?, ?, ?, ?, ?, ?, ?)"; 
+			PreparedStatement preparedStmt = con.prepareStatement(query1); 
+			// binding values
+			preparedStmt.setInt(1, 0); 
+			preparedStmt.setString(2, productName);
+			preparedStmt.setString(3, ProductType);
+			System.out.print("HEllo--------------------------ccccccccc----------------------------------");
+			preparedStmt.setDouble(4, Double.parseDouble(productPrice)); 
+			System.out.print("HEllo--------------------------1----------------------------------");
+			preparedStmt.setString(5, productDescription);
+			System.out.print("HEllo---------------------------2---------------------------------");
+			preparedStmt.setString(6, productAddDate);
+			System.out.print("HEllo---------------------------3---------------------------------");
+			preparedStmt.setString(7, productEndDate);
+			System.out.print("HEllo----------------------------4--------------------------------");
+			// execute the statement3
+			preparedStmt.execute(); 
+			con.close(); 
+			output = "Product Inserted successfully "; 
+		} 
+		catch (Exception e) 
+		{ 
+			output = "Error while inserting the Product."; 
+			System.err.println(e.getMessage());
+		} 
+		return output; 
+	}
 	
 	
 	///////////// read all product ////////////////
@@ -46,7 +89,7 @@ public class Product {
 				String productID = Integer.toString(rs.getInt("ProductID")); 
 				String productName = rs.getString("ProductName"); 
 				String ProductType = rs.getString("ProductType");
-				String productPrice = Double.toString(rs.getDouble("Minimum Price"));
+				String productPrice = Double.toString(rs.getDouble("MinimumPrice"));
 				String productDescription = rs.getString("ProductDescription");
 				String productAddDate = rs.getString("AddDate"); 
 				String productEndDate = rs.getString("ClosingDate"); 
@@ -72,6 +115,8 @@ public class Product {
 				output = "Error while reading the products."; 
 				System.err.println(e.getMessage()); 
 			} 
-	 return output; 
+		return output; 
 	 }
+	
+	
 }
