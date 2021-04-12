@@ -127,7 +127,8 @@ public class Product {
 	 }
 	
 	//////////////////////////////// Upadate Item //////////////////////////////
-	/*public String updateProduct(String ProductID, String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate)
+	
+	public String updateProduct(String ProductID, String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate)
 	{ 
 		String output = ""; 
 		try
@@ -139,26 +140,30 @@ public class Product {
 			} 
 			
 			// create a prepared statement
-			String query = "UPDATE product SET itemCode=?,itemName=?,itemPrice=?,itemDesc=? WHERE itemID=?"; 
+			String query = "UPDATE product SET `ProductName`=?,`ProductType`=?,`MinimumPrice`=?,`ProductDescription`=?,`AddDate`=?,`ClosingDate`=? WHERE `ProductID`=?"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
+			
 			// binding values
 			preparedStmt.setString(1, productName); 
 			preparedStmt.setString(2, ProductType); 
 			preparedStmt.setDouble(3, Double.parseDouble(productPrice)); 
-			preparedStmt.setString(4, desc); 
-			preparedStmt.setInt(5, Integer.parseInt(ID)); 
+			preparedStmt.setString(4, productDescription); 
+			preparedStmt.setString(5, productAddDate);
+			preparedStmt.setString(6, productEndDate);
+			preparedStmt.setInt(7, Integer.parseInt(ProductID)); 
+			
 			// execute the statement
 			preparedStmt.execute(); 
 			con.close(); 
-			output = "Updated successfully"; 
+			output = "Product Updated successfully"; 
 		} 
 		catch (Exception e) 
 		{ 
-			output = "Error while updating the item."; 
+			output = "Error while updating the Product."; 
 			System.err.println(e.getMessage()); 
 		} 
 		return output; 
 	 
-	}*/
+	}
 	
 }
