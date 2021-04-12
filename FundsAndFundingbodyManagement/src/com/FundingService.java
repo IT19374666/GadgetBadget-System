@@ -27,9 +27,10 @@ public class FundingService {
 	 @FormParam("email") String email, 
 	 @FormParam("address") String address, 
 	 @FormParam("phone") String phone,
-	 @FormParam("interestArea") String interestArea) 
+	 @FormParam("interestArea") String interestArea, 
+	 @FormParam("fund_range") String fund_range)
 	{ 
-	 String output = FundingBoadyObj.insertFundingBody(name, email, address, phone,interestArea); 
+	 String output = FundingBoadyObj.insertFundingBody(name, email, address, phone,interestArea,fund_range); 
 	return output; 
 	}
 	

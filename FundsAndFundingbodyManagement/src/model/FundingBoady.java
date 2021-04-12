@@ -10,7 +10,7 @@ public class FundingBoady {
 	 Connection con = null; 
 	 try
 	 { 
-	 Class.forName("com.mysql.jdbc.Driver"); 
+	 Class.forName("com.mysql.cj.jdbc.Driver"); 
 	 
 	 //Provide the correct details: DBServer/DBName, username, password 
 	 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/funds_and_fundingbody_managment", "root", ""); 
@@ -24,26 +24,30 @@ public class FundingBoady {
 	
 	
 	//Insert Funding body details
-	public String insertFundingBody(String name,String email,String address,String phone,String interestArea ) {
+	public String insertFundingBody(String name,String email,String address,String phone,String interestArea, String fund_range) {
 		
 		String output = "";
 		
 		try
 		 { 
 		 Connection con = connect(); 
+		
 		 if (con == null) 
 		 {return "Error while connecting to the database for inserting."; } 
 		 // create a prepared statement
-		 String query = " insert into fundingbody ('idFundingBody','name','email','address','phone','interestArea')"+ "values (?,?,?,?,?,?)"; 
+		 String query = "insert into fundingbody (`idFundingBody`,`name`,`email`,`address`,`phone`,`interestArea`,`fund_range`)"+ "values (?,?,?,?,?,?,?)"; 
 	
 		 PreparedStatement preparedStmt = con.prepareStatement(query); 
 		 // binding values
 		 preparedStmt.setInt(1, 0); 
+		
 		 preparedStmt.setString(2, name); 
 		 preparedStmt.setString(3, email); 
 		 preparedStmt.setString(4, address);
 		 preparedStmt.setInt(5, Integer.parseInt(phone));  
-		 preparedStmt.setString(6, interestArea); 
+		 preparedStmt.setString(6, interestArea);
+		 preparedStmt.setDouble(7, Double.parseDouble(fund_range));
+		 
 		
 		 //execute statement
 		 preparedStmt.execute(); 
@@ -79,6 +83,7 @@ public class FundingBoady {
 	 "<th>Address</th>" + 
 	 "<th>Phone number</th>" +
 	 "<th>Interest Area</th>" +
+	 "<th>Fund Range</th>" +
 	 "<th>Update</th><th>Remove</th></tr>"; 
 	 
 	 String query = "select * from fundingbody"; 
@@ -93,12 +98,15 @@ public class FundingBoady {
 	 String address = rs.getString("address"); 
 	 String phone = Integer.toString(rs.getInt("phone")); 
 	 String interestArea = rs.getString("interestArea"); 
+	 String fund_range = Double.toString(rs.getDouble("fund_range"));    
 	 // Add into the html table
 	 output += "<tr><td>" + name + "</td>"; 
 	 output += "<td>" + email + "</td>"; 
 	 output += "<td>" + address + "</td>"; 
 	 output += "<td>" + phone + "</td>"; 
-	 output += "<td>" + interestArea + "</td>"; 
+	 output += "<td>" + interestArea + "</td>";
+	 output += "<td>" + fund_range + "</td>"; 
+	 
 	 // buttons
 	 output += "<td><input name='btnUpdate' type='button' value='Update'  class='btn btn-secondary'></td>"
 	 + "<td><form method='post' action='items.jsp'>"
