@@ -166,4 +166,37 @@ public class Product {
 	 
 	}
 	
+	/////////////////////////// Delete Item ///////////////////////////////////////////
+	
+	public String deleteProduct(String productID) 
+	{ 
+		String output = ""; 
+		try
+		{ 
+			Connection con = connect(); 
+			if (con == null) 
+			{
+				return "Error while connecting to the database for deleting."; 
+			} 
+			
+			// create a prepared statement
+			String query = "delete from product where `ProductID`=?"; 
+			PreparedStatement preparedStmt = con.prepareStatement(query); 
+			
+			// binding values
+			preparedStmt.setInt(1, Integer.parseInt(productID)); 
+			
+			// execute the statement
+			preparedStmt.execute(); 
+			con.close(); 
+			output = "Product Deleted successfully"; 
+		} 
+		catch (Exception e) 
+		{ 
+			output = "Error while deleting the Product."; 
+			System.err.println(e.getMessage()); 
+		} 
+		return output; 
+	 } 
+	
 }

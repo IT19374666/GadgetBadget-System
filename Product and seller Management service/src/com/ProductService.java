@@ -64,4 +64,20 @@ public class ProductService {
 	 String output = productObj.updateProduct(productID, productName, productType, productPrice, productDescription, productAddDate, productEndDate);
 	 return output; 
 	}
+	
+	@DELETE
+	@Path("/") 
+	@Consumes(MediaType.APPLICATION_XML) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String deleteItem(String productData) 
+	{ 
+		
+	//Convert the input string to an XML document
+	 Document doc = Jsoup.parse(productData, "", Parser.xmlParser()); 
+	 
+	//Read the value from the element <ProductID>
+	 String productID = doc.select("ProductID").text(); 
+	 String output = productObj.deleteProduct(productID); 
+	 return output; 
+	}
 }
