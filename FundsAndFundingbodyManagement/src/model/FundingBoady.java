@@ -127,6 +127,46 @@ public class FundingBoady {
 	 }
 	
 	
+	//update funding body details
+	
+	public String updateFundingBody(String idFundingBody,String name,String email,String address,String phone,String interestArea, String fund_range) {
+		
+		String output = ""; 
+		 try
+		 { 
+		 Connection con = connect(); 
+		 if (con == null) 
+		 {return "Error while connecting to the database for updating."; } 
+		 // create a prepared statement
+		 String query = "UPDATE fundingbody SET name=?,email=?,address=?,phone=?,interestArea=?,fund_range=? WHERE idFundingBody=?"; 
+		 PreparedStatement preparedStmt = con.prepareStatement(query); 
+		 // binding values
+		 preparedStmt.setString(1, name); 
+		 preparedStmt.setString(2, email);
+		 preparedStmt.setString(3, address);
+		 preparedStmt.setInt(4, Integer.parseInt(phone));
+		 preparedStmt.setString(5, interestArea); 
+		 preparedStmt.setInt(6, Integer.parseInt(fund_range));
+		 preparedStmt.setInt(7, Integer.parseInt(idFundingBody)); 
+		 
+		 // execute the statement
+		 preparedStmt.execute(); 
+		 con.close(); 
+		 output = "Updated successfully"; 
+		 } 
+		 catch (Exception e) 
+		 { 
+		 output = "Error while updating funding body details..."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		 return output; 
+		
+	}
+		
+		
+	
+	
+	
 	
 	
 }
