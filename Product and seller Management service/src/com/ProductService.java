@@ -30,14 +30,15 @@ public class ProductService {
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
-	public void insertProduct(
-			@FormParam(value = "ProductName") String ProductName, 
-			@FormParam(value = "ProductType") String ProductType, 
-			@FormParam(value = "MinimumPrice") String MinimumPrice, 
-			@FormParam(value = "ProductDescription") String ProductDescription,
-			@FormParam(value = "AddDate") String AddDate,
-			@FormParam(value = "ClosingDate") String ClosingDate) 
+	public String insertProduct(
+			@FormParam("ProductName") String ProductName, 
+			@FormParam("ProductType") String ProductType, 
+			@FormParam("MinimumPrice") String MinimumPrice, 
+			@FormParam("ProductDescription") String ProductDescription,
+			@FormParam("AddDate") String AddDate,
+			@FormParam("ClosingDate") String ClosingDate) 
 	{
-	 		productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, AddDate, ClosingDate); 
+	 		String output = productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, AddDate, ClosingDate); 
+	 		return output;
 	}
 }

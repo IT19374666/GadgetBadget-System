@@ -3,6 +3,9 @@ package model;
 import java.sql.*; 
 
 public class Product {
+	
+	/////////////////////////////// DB Connection ///////////////////////////////
+	
 	private Connection connect() 
 	 { 
 	 Connection con = null; 
@@ -21,7 +24,8 @@ public class Product {
 	 } 
 	
 	
-	////////////////insert item///////////////////////////////
+	////////////////Insert Product///////////////////////////////
+	
 	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate) 
 	{ 
 		String output = "";
@@ -33,23 +37,21 @@ public class Product {
 			{
 				return "Error while connecting to the database for inserting."; 
 			} 
+			
 			// create a prepared statement
 			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`) "+
-			" values (?, ?, ?, ?, ?, ?, ?)"; 
+							" values (?, ?, ?, ?, ?, ?, ?)"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query1); 
+			
 			// binding values
 			preparedStmt.setInt(1, 0); 
 			preparedStmt.setString(2, productName);
 			preparedStmt.setString(3, ProductType);
-			System.out.print("HEllo--------------------------ccccccccc----------------------------------");
 			preparedStmt.setDouble(4, Double.parseDouble(productPrice)); 
-			System.out.print("HEllo--------------------------1----------------------------------");
 			preparedStmt.setString(5, productDescription);
-			System.out.print("HEllo---------------------------2---------------------------------");
 			preparedStmt.setString(6, productAddDate);
-			System.out.print("HEllo---------------------------3---------------------------------");
 			preparedStmt.setString(7, productEndDate);
-			System.out.print("HEllo----------------------------4--------------------------------");
+			
 			// execute the statement3
 			preparedStmt.execute(); 
 			con.close(); 
@@ -65,6 +67,7 @@ public class Product {
 	
 	
 	///////////// read all product ////////////////
+	
 	public String readAllProduct() 
 	{ 
 		String output = ""; 
@@ -75,6 +78,7 @@ public class Product {
 			{
 				return "Error while connecting to the database for reading.";
 			}
+			
 			// Prepare the html table to be displayed
 			output = "<table border='1'><tr><th>Product ID</th><th>Product Name</th>" +"<th>Product Type</th>" +"<th>Product Price</th>" + 
 					 "<th>Product Description</th>" +"<th>Product Add Date</th>" +"<th>Product End Date</th>" +
@@ -83,6 +87,7 @@ public class Product {
 			String query = "select * from product"; 
 			Statement stmt = con.createStatement(); 
 			ResultSet rs = stmt.executeQuery(query); 
+			
 			// iterate through the rows in the result set
 			while (rs.next()) 
 			{ 
@@ -93,6 +98,7 @@ public class Product {
 				String productDescription = rs.getString("ProductDescription");
 				String productAddDate = rs.getString("AddDate"); 
 				String productEndDate = rs.getString("ClosingDate"); 
+				
 				// Add into the html table
 				output += "<tr><td>" + productID + "</td>"; 
 				output += "<td>" + productName + "</td>"; 
@@ -101,12 +107,14 @@ public class Product {
 				output += "<td>" + productDescription + "</td>"; 
 				output += "<td>" + productAddDate + "</td>"; 
 				output += "<td>" + productEndDate + "</td>"; 
+				
 				// buttons
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"+ "<td><form method='post' action='items.jsp'>"
 					   + "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
 					   + "<input name='productID' type='hidden' value='" + productID + "'>" + "</form></td></tr>"; 
 			} 
 			con.close(); 
+			
 			// Complete the html table
 			output += "</table>"; 
 			} 
@@ -118,5 +126,39 @@ public class Product {
 		return output; 
 	 }
 	
+	//////////////////////////////// Upadate Item //////////////////////////////
+	/*public String updateProduct(String ProductID, String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate)
+	{ 
+		String output = ""; 
+		try
+		{ 
+			Connection con = connect(); 
+			if (con == null) 
+			{
+				return "Error while connecting to the database for updating."; 
+			} 
+			
+			// create a prepared statement
+			String query = "UPDATE product SET itemCode=?,itemName=?,itemPrice=?,itemDesc=? WHERE itemID=?"; 
+			PreparedStatement preparedStmt = con.prepareStatement(query); 
+			// binding values
+			preparedStmt.setString(1, productName); 
+			preparedStmt.setString(2, ProductType); 
+			preparedStmt.setDouble(3, Double.parseDouble(productPrice)); 
+			preparedStmt.setString(4, desc); 
+			preparedStmt.setInt(5, Integer.parseInt(ID)); 
+			// execute the statement
+			preparedStmt.execute(); 
+			con.close(); 
+			output = "Updated successfully"; 
+		} 
+		catch (Exception e) 
+		{ 
+			output = "Error while updating the item."; 
+			System.err.println(e.getMessage()); 
+		} 
+		return output; 
+	 
+	}*/
 	
 }
