@@ -63,6 +63,26 @@ public class FundingService {
 	 String output = FundingBoadyObj.updateFundingBody(idFundingBody, name, email, address, phone,interestArea,fund_range); 
 	return output; 
 	}
+	
+	
+	
+	
+	@DELETE
+	@Path("/") 
+	@Consumes(MediaType.APPLICATION_XML) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String deleteFbody(String fBodyData) 
+	{ 
+	//Convert the input string to an XML document
+	 Document doc = Jsoup.parse(fBodyData, "", Parser.xmlParser()); 
+	 
+	//Read the value from the element <itemID>
+	 String fundingBodyID = doc.select("idFundingBody").text(); 
+	 String output = FundingBoadyObj.deleteFundingBody(fundingBodyID); 
+	return output; 
+	}
+	
+	
 
 	
 

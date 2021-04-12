@@ -162,11 +162,63 @@ public class FundingBoady {
 		 return output; 
 		
 	}
-		
-		
 	
 	
+	//Delete funding body details
 	
+	/*public String deleteFundingBody(String idFundingBody) 
+	 { 
+	 String output = ""; 
+	 System.out.println(idFundingBody);
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for deleting."; } 
+	 // create a prepared statement
+	 String query = "delete from fundingbody where `idFundingBody`=?"; 
+	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 // binding values
+	 preparedStmt.setInt(1, Integer.parseInt(idFundingBody)); 
+	 // execute the statement
+	 preparedStmt.execute(); 
+	 con.close(); 
+	 output = "Deleted successfully"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while deleting the funding body detail."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 }*/
 	
+	public String deleteFundingBody(String fundingBodyID) 
+	 { 
+	 String output = ""; 
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for deleting."; } 
+	 // create a prepared statement
+	 String query = "delete from fundingbody where `fundingbody`=?"; 
+	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 // binding values
+	 preparedStmt.setInt(1, Integer.parseInt(fundingBodyID)); 
+	 // execute the statement
+	 preparedStmt.execute(); 
+	 con.close(); 
+	 output = "Deleted successfully"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while deleting the funding body detail."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 }
+	
+
 	
 }
