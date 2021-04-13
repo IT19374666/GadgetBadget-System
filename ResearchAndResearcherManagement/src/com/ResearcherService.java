@@ -55,7 +55,7 @@ public class ResearcherService {
 		//convert the input string to a JSON object
 		JsonObject resObject = new JsonParser().parse(resData).getAsJsonObject();
 		
-		//read the vakues from the JSON object
+		//read the values from the JSON object
 		String resID = resObject.get("researcherID").getAsString();
 		String name = resObject.get("name").getAsString();
 		String email = resObject.get("email").getAsString();
@@ -66,6 +66,20 @@ public class ResearcherService {
 		
 		String output = researcherobj.updateResearcher(resID, name, email, address, phone, interest, type);
 		
+		return output;
+	}
+	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteResearcher(String resData) {
+		//convert the input string to an XML document
+		Document doc = Jsoup.parse(resData, "", Parser.xmlParser());
+		
+		String resID = doc.select("Researcher_ID").text();
+		
+		String output = researcherobj.deleteResearcher(resID);
 		return output;
 	}
 }
