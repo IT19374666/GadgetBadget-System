@@ -77,8 +77,8 @@ public class FundingService {
 	 Document doc = Jsoup.parse(fBodyData, "", Parser.xmlParser()); 
 	 
 	//Read the value from the element <itemID>
-	 String fundingBodyID = doc.select("idFundingBody").text(); 
-	 String output = FundingBoadyObj.deleteFundingBody(fundingBodyID); 
+	 String idFundingBody = doc.select("idFundingBody").text(); 
+	 String output = FundingBoadyObj.deleteFundingBody(idFundingBody); 
 	return output; 
 	}
 	

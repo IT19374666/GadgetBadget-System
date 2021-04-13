@@ -202,7 +202,7 @@ public class FundingBoady {
 	 if (con == null) 
 	 {return "Error while connecting to the database for deleting."; } 
 	 // create a prepared statement
-	 String query = "delete from fundingbody where `fundingbody`=?"; 
+	 String query = "delete from fundingbody where `idFundingBody`=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
 	 // binding values
 	 preparedStmt.setInt(1, Integer.parseInt(fundingBodyID)); 
