@@ -24,8 +24,8 @@ public class ResearcherService {
 	@GET 
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
-	public String read() {
-		return "Hello";
+	public String readResearchers() {
+		return researcherobj.readResearchers();
 	}
 	
 	

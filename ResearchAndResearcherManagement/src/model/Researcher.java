@@ -59,6 +59,59 @@ public class Researcher {
 		return output;
 	}
 	
+	public String readResearchers() {
+		String output = "";
+		try {
+			Connection con = connect();
+			
+			if(con == null) {
+				return "Error while connecting to the database for reading"; 
+			}
+			//prepare the html table
+			output = "<table border='1'>"
+					+ "<tr>"
+					+ "<th>Researcher ID</th>"
+					+ "<th>Name</th>"
+					+ "<th>Email</th>"
+					+ "<th>Address</th>"
+					+ "<th>Phone</th>"
+					+ "<th>Interest Area</th>"
+					+ "<th>Researcher Type</th>";
+			
+			String query = "SELECT * FROM researcher";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			//iterating through the rows in rs
+			while(rs.next()) {
+				String resID = Integer.toString(rs.getInt("stakeholder_ID"));
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				String address = rs.getString("address");
+				String phone = rs.getString("phone_no");
+				String interest = rs.getString("interest_area");
+				String type = rs.getString("researcher_type");
+				
+				//add into the table
+				output += "<tr><td>" +resID+ "</td>";
+				output += "<td>" +name+ "</td>";
+				output += "<td>" +email+ "</td>";
+				output += "<td>" +address+ "</td>";
+				output += "<td>" +phone+ "</td>";
+				output += "<td>" +interest+ "</td>";
+				output += "<td>" +type+ "</td></tr>";
+				
+			}
+			con.close();
+			output += "</table>";
+		}
+		catch(Exception e) {
+			output = "Error while reading data";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
 	
 
 }
