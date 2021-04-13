@@ -112,6 +112,43 @@ public class Researcher {
 		return output;
 	}
 	
+	public String updateResearcher(String ID, String name, String email, String address, String phone, String interest, String type ) {
+		String output = "";
+		
+		try {
+			Connection con = connect();
+			
+			if (con == null) {
+				return "Error while connecting to the database for updating";
+				
+			}
+			//create prepared statement
+			String query = "UPDATE researcher SET name=?, email=?, address=?, phone_no=?, interest_area=?, researcher_type=? WHERE stakeholder_ID=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			//binding values
+			
+			preparedStmt.setString(1, name);
+			preparedStmt.setString(2, email);
+			preparedStmt.setString(3, address);
+			preparedStmt.setString(4, phone);
+			preparedStmt.setString(5, interest);
+			preparedStmt.setString(6, type);
+			preparedStmt.setInt(7, Integer.parseInt(ID));
+			
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Updated successfully";
+			
+		}
+		catch(Exception e) {
+			output = "Error while updating the record";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 	
 
 }

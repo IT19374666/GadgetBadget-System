@@ -44,4 +44,28 @@ public class ResearcherService {
 		return output;
 				
 	}
+	
+	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateResearcher(String resData) {
+		
+		//convert the input string to a JSON object
+		JsonObject resObject = new JsonParser().parse(resData).getAsJsonObject();
+		
+		//read the vakues from the JSON object
+		String resID = resObject.get("researcherID").getAsString();
+		String name = resObject.get("name").getAsString();
+		String email = resObject.get("email").getAsString();
+		String address = resObject.get("address").getAsString();
+		String phone = resObject.get("phone").getAsString();
+		String interest = resObject.get("interestArea").getAsString();
+		String type = resObject.get("type").getAsString();
+		
+		String output = researcherobj.updateResearcher(resID, name, email, address, phone, interest, type);
+		
+		return output;
+	}
 }
