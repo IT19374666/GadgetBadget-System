@@ -76,10 +76,15 @@ public class Research {
 					+ "<th>Research Area</th>"
 					+ "<th>Status</th>"
 					+ "<th>Progress</th>"
-					+ "<th>Stakeholder ID</th>";
+					+ "<th>Stakeholder ID</th>"
+					+ "<th>Name</th>"
+					+ "<th>Email</th>"
+					+ "<th>Phone</th>"
+					+ "</tr>";
 					
 			
-			String query = "SELECT * FROM research";
+			//String query = "SELECT * FROM research";
+			String query = "SELECT * FROM research research, researcher res WHERE research.stakeholder_ID = res.stakeholder_ID";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -91,6 +96,9 @@ public class Research {
 				String status = rs.getString("status");
 				String progress = rs.getString("progress");
 				String stkID = rs.getString("stakeholder_ID");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				String phone = rs.getString("phone_no");
 				
 				
 				//add into the table
@@ -99,7 +107,10 @@ public class Research {
 				output += "<td>" +area+ "</td>";
 				output += "<td>" +status+ "</td>";
 				output += "<td>" +progress+ "</td>";
-				output += "<td>" +stkID+ "</td><>/tr";
+				output += "<td>" +stkID+ "</td>";
+				output += "<td>" +name+ "</td>";
+				output += "<td>" +email+ "</td>";
+				output += "<td>" +phone+ "</td></tr>";
 				
 				
 			}
