@@ -59,5 +59,58 @@ public class Research {
 		}
 		return output;
 	}
+	
+	public String readResearches() {
+		String output = "";
+		try {
+			Connection con = connect();
+			
+			if(con == null) {
+				return "Error while connecting to the database for reading"; 
+			}
+			//prepare the html table
+			output = "<table border='1'>"
+					+ "<tr>"
+					+ "<th>Researche ID</th>"
+					+ "<th>Research Topic</th>"
+					+ "<th>Research Area</th>"
+					+ "<th>Status</th>"
+					+ "<th>Progress</th>"
+					+ "<th>Stakeholder ID</th>";
+					
+			
+			String query = "SELECT * FROM research";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			//iterating through the rows in rs
+			while(rs.next()) {
+				String resID = Integer.toString(rs.getInt("research_ID"));
+				String topic = rs.getString("research_topic");
+				String area = rs.getString("research_area");
+				String status = rs.getString("status");
+				String progress = rs.getString("progress");
+				String stkID = rs.getString("stakeholder_ID");
+				
+				
+				//add into the table
+				output += "<tr><td>" +resID+ "</td>";
+				output += "<td>" +topic+ "</td>";
+				output += "<td>" +area+ "</td>";
+				output += "<td>" +status+ "</td>";
+				output += "<td>" +progress+ "</td>";
+				output += "<td>" +stkID+ "</td><>/tr";
+				
+				
+			}
+			con.close();
+			output += "</table>";
+		}
+		catch(Exception e) {
+			output = "Error while reading research data";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 
 }

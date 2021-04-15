@@ -20,6 +20,17 @@ public class ResearchService {
 	
 	Research researchObj = new Research();
 	
+	
+	
+	@GET 
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String readResearches() {
+		return researchObj.readResearches();
+	}
+	
+	
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
