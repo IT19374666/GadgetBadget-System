@@ -19,6 +19,18 @@ public class ProposalService {
 	
 	Proposal proposalObj = new Proposal();
 	
+	
+	
+	@GET 
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String readResearches() {
+		return proposalObj.readProposals();
+	}
+	
+	
+	
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
