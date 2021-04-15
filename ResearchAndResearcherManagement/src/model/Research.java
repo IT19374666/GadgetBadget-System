@@ -123,5 +123,42 @@ public class Research {
 		}
 		return output;
 	}
+	
+	
+	public String updateResearch(String ID, String topic, String area, String status, String progress) {
+		String output = "";
+		
+		try {
+			Connection con = connect();
+			
+			if (con == null) {
+				return "Error while connecting to the database for updating";
+				
+			}
+			//create prepared statement
+			String query = "UPDATE research SET research_topic=?, research_area=?, status=?, progress=? WHERE research_ID=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			//binding values
+			
+			preparedStmt.setString(1, topic);
+			preparedStmt.setString(2, area);
+			preparedStmt.setString(3, status);
+			preparedStmt.setString(4, progress);
+			preparedStmt.setInt(5, Integer.parseInt(ID));
+			
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Updated successfully";
+			
+		}
+		catch(Exception e) {
+			output = "Error while updating the record";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 
 }

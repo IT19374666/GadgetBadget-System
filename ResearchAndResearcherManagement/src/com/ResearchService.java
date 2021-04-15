@@ -55,5 +55,29 @@ public class ResearchService {
 		return output;
 	}
 	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateResearch(String resData) {
+		
+		//convert the input string to a JSON object
+		JsonObject resObject = new JsonParser().parse(resData).getAsJsonObject();
+		
+		//read the values from the JSON object
+		String ID = resObject.get("researchID").getAsString();
+		String topic = resObject.get("research_topic").getAsString();
+		String area = resObject.get("research_area").getAsString();
+		String status = resObject.get("status").getAsString();
+		String progress = resObject.get("progress").getAsString();
+		
+		
+		String output = researchObj.updateResearch(ID, topic, area, status, progress);
+		
+		
+		
+		return output;
+	}
+	
 
 }
