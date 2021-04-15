@@ -79,5 +79,21 @@ public class ResearchService {
 		return output;
 	}
 	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteResearch(String resData) {
+		
+		JsonObject resObject = new JsonParser().parse(resData).getAsJsonObject();
+		
+		String ID = resObject.get("researchID").getAsString();
+		
+		String output = researchObj.deleteResearch(ID);
+		
+		return output;
+		
+	}
+	
 
 }

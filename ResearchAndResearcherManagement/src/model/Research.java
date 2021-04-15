@@ -71,7 +71,7 @@ public class Research {
 			//prepare the html table
 			output = "<table border='1'>"
 					+ "<tr>"
-					+ "<th>Researche ID</th>"
+					+ "<th>Research ID</th>"
 					+ "<th>Research Topic</th>"
 					+ "<th>Research Area</th>"
 					+ "<th>Status</th>"
@@ -156,6 +156,35 @@ public class Research {
 		}
 		catch(Exception e) {
 			output = "Error while updating the record";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	public String deleteResearch(String ID) {
+		String output = "";
+		
+		try {
+			Connection con = connect();
+			
+			if(con == null) {
+				return "Error while connecting to the dtabase for deleting";
+			}
+			
+			//create a prepared statement 
+			String query = "DELETE FROM research WHERE research_ID=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			preparedStmt.setInt(1, Integer.parseInt(ID));
+			
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Deleted successfully";
+		}
+		catch(Exception e) {
+			output = "Error while deleting the record";
 			System.err.println(e.getMessage());
 		}
 		return output;
