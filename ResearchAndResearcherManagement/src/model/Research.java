@@ -28,7 +28,7 @@ public class Research {
 			Connection con = connect();
 			
 			if(con == null) {
-				return "Error while connecting to the database to add a Researcher";
+				return "Error while connecting to the database to add a Research";
 			}
 			
 			//creating a prepared statement
