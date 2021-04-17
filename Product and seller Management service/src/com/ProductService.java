@@ -2,15 +2,27 @@ package com;
 
 import model.Product; 
 
+
 //For REST Service
 import javax.ws.rs.*; 
 import javax.ws.rs.core.MediaType; 
 //For JSON
-import com.google.gson.*; 
+import com.google.gson.*;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 //For XML
 import org.jsoup.*; 
 import org.jsoup.parser.*; 
 import org.jsoup.nodes.Document;
+
+/*import javax.ws.rs.client.AsyncInvoker;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;*/
+import javax.ws.rs.core.Response;
 
 @Path("/Product")
 public class ProductService {
@@ -80,4 +92,29 @@ public class ProductService {
 	 String output = productObj.deleteProduct(productID); 
 	 return output; 
 	}
+	
+	
+	
+	@PUT
+	@Path("/acceptBid/{bid}") 
+	@Consumes(MediaType.APPLICATION_JSON) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String acceptBid(@PathParam(value= "bid") String BID) 
+	{
+	
+		System.out.println(BID);
+		//interprocess communication
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/accepted/"+BID);
+		ClientResponse response = webResource.type("application/xml").put(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		
+		System.out.println(queryResponse);
+	
+		return queryResponse;
+		//return productObj.readAllProduct();
+	}
+	
+	
+	
 }
