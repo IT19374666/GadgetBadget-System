@@ -24,9 +24,11 @@
       </plugin>
     </plugins>
   </build>
+ 
   
   <dependencies>
-  	<dependency>
+     
+    <dependency>
  		<groupId>com.sun.jersey</groupId>
  		<artifactId>jersey-bundle</artifactId>
  		<version>1.19.4</version>
@@ -41,6 +43,14 @@
 		<artifactId>jersey-server</artifactId>
  		<version>1.19.4</version>
  	</dependency>
+ 	<dependency>
+ 		<groupId>com.sun.jersey</groupId>
+ 		<artifactId>jersey-client</artifactId>
+ 		<version>1.19.4</version>
+ 	</dependency>
+ 	
+ 	
+ 	
  	
  	<dependency>
  		<groupId>mysql</groupId>
@@ -59,6 +69,10 @@
 		 <artifactId>jsoup</artifactId>
 		 <version>1.8.1</version>
  	</dependency>
+ 	
+ 	
+ 
+
   </dependencies>
   
   

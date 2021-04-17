@@ -83,6 +83,18 @@ public class BidService {
 		 	
 	 }
 	 
+
+	 @PUT
+	 @Path("/accepted/{bid}")
+	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	 @Produces(MediaType.TEXT_PLAIN)
+	 public void updateBidtoAccepted( @PathParam(value = "bid")String bidId) {
+		 
+		 	bidObj.updateBidtoAccepted(bidId);
+		 
+		 	
+	 }
+	 
 	 
 	 @DELETE
 	 @Path("/{bid}")

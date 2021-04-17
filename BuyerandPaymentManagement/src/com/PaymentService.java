@@ -2,11 +2,32 @@ package com;
 
 import model.Payment;
 
+//For generating  date
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Future;
+
+
 //For REST Service
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
+/*
+import javax.ws.rs.client.AsyncInvoker;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+*/
 /**
  * @author IT19374666
  *
@@ -24,9 +45,14 @@ public class PaymentService {
 			 @FormParam(value = "customerId") String customerId,
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "pMethod") String pMethod,
-			 @FormParam(value = "cardNo")String cardNo,
-			 @FormParam(value = "paymentDate")String paymentDate) {
+			 @FormParam(value = "cardNo")String cardNo) {
 		 
+		 	//Get current date
+		 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+		 	String paymentDate = formatter.format( new Date());
+		 	
+		 
+		 	//System.out.println(paymentDate);
 		 	paymentObj.insertPayment(itemCode,customerId, amount, pMethod, cardNo, paymentDate);
 		 
 		 	

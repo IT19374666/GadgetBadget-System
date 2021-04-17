@@ -210,6 +210,43 @@ public class Bid {
 			
 		}
 		
+		//Accepted bid
+		public String updateBidtoAccepted(String bidId) {
+			String output = "";
+			String accepted = "Yes";
+			
+			
+			
+			try {
+				Connection con = connect();
+				if (con == null){
+					return "Error while connecting to the database";
+				}
+				// create a prepared statement
+				String query = "update bids set `accepted` = ?  where `bidid` = ?";		
+				PreparedStatement preparedStmt = con.prepareStatement(query);
+				
+				// binding values
+				
+				
+				preparedStmt.setString(1, accepted);
+				preparedStmt.setInt(2, Integer.parseInt(bidId));
+
+				//execute the statement
+				preparedStmt.executeUpdate();
+				con.close();
+				output = "Updated successfully";
+			}catch (Exception e) {
+				output = "Error while updating accepted bids";
+				System.err.println(e.getMessage());
+		 	}
+		 	
+			return output;
+			
+			
+		}
+		
+		
 		//Delete a bid
 		public String deleteBid (String bidID) {
 			
