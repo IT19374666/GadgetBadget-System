@@ -157,7 +157,7 @@ public class Bid {
 					output += "Bid Amount: <input name=\"amount\" type=\"text\" value=\""+ amount + "\" class=\"form-control\"><br>";
 					output += "Special Conditions: <input name=\"conditions\" type=\"text\" value=\""+ specConditions + "\" class=\"form-control\"><br>";
 					output += "Due date: <input name=\"duedate\" type=\"text\" value=\""+ dueDate + "\" class=\"form-control\"><br>";
-					output += "Accepted: <input name=\"accepted\" type=\"text\" value=\""+ dueDate + "\" class=\"form-control\"><br>";
+					output += "Accepted: <input name=\"accepted\" type=\"text\" value=\""+ accepted + "\" class=\"form-control\"><br>";
 					output += "<input name='bidID' type='hidden' value='" + bidId+ "'>";
 				
 				
@@ -173,6 +173,62 @@ public class Bid {
 			
 			return output;
 		}
+		
+		
+		//select bids for one item
+		
+		public String readBidsForItem(String itemId) {
+				String output = "";
+				try {
+					Connection con = connect();
+					if (con == null) {
+						return "Error while connecting to the database for reading.";
+					}
+					// Prepare the html table to be displayed
+					output = "<table border='1'><tr>"
+							+ "<th>Bid Id</th>"
+							+"<th>Item Code</th>"
+							+ "<th>Customer Id</th>"
+							+ "<th>Amount</th>"
+							+ "<th>Special Conditions</th>"
+							+ "<th>Due date</th>"
+							+ "<th>Accepted</th></tr>";
+					String query = "select * from bids where itemCode = ? ";
+					PreparedStatement preparedStatement = con.prepareStatement(query);
+					preparedStatement.setString(1, itemId);
+					
+					ResultSet rs = preparedStatement.executeQuery();
+					// iterate through the rows in the result set
+					while (rs.next()) {
+						String bidId = Integer.toString(rs.getInt("bidid"));
+						String itemCode = rs.getString("itemCode");
+						String customerId = rs.getString("customerId");
+						String amount = Double.toString(rs.getDouble("amount"));
+						String specConditions = rs.getString("sConditions");
+						String dueDate = rs.getString("dueDate");
+						String accepted = rs.getString("accepted");
+						// Add a row into the html table
+						output += "<tr><td>" + bidId + "</td>";
+						output += "<td>" + itemCode + "</td>";
+						output += "<td>" + customerId + "</td>";
+						output += "<td>" + amount + "</td>"; 
+						output += "<td>" + specConditions +"</td>";
+						output += "<td>" +  dueDate  +"</td>";
+						output += "<td>" + accepted   +"</td></tr>";
+				 
+							
+					}
+					con.close();
+					// Complete the html table
+						
+					output += "</table>";
+				} catch (Exception e) {
+					output = "Error while reading the bids";
+					System.err.println(e.getMessage());
+				}
+				return output;
+		}
+				
 		
 		//Update bid details
 		public String updateBids(String bidId, String amount, String sConditions, String dueDate) {

@@ -14,20 +14,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
-
+//For interprocess communication 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-/*
-import javax.ws.rs.client.AsyncInvoker;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
-*/
 /**
  * @author IT19374666
  *
@@ -41,7 +33,7 @@ public class PaymentService {
 	 @Path("/")
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Produces(MediaType.TEXT_PLAIN)
-	 public void insertPayment(@FormParam(value = "itemCode") String itemCode,
+	 public String insertPayment(@FormParam(value = "itemCode") String itemCode,
 			 @FormParam(value = "customerId") String customerId,
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "pMethod") String pMethod,
@@ -51,9 +43,21 @@ public class PaymentService {
 		 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 		 	String paymentDate = formatter.format( new Date());
 		 	
+		 	/*
+		 	//Implementation of the interprocess communication for payment 
+		 	Client client = Client.create();
 		 
+		 	WebResource webResource = client.resource("http://localhost:8088/BuyerandPaymentManagement/BuyerandPaymentService/Bid/accepted/4");
+		 	System.out.println(webResource);
+		 	ClientResponse response = webResource.type("application/xml").put(ClientResponse.class);
+		 	System.out.println("Res :"
+	+response);
+		 	String queryRespose = response.getEntity(String.class);
+		 	
+		 	System.out.println(queryRespose);
+		 	*/
 		 	//System.out.println(paymentDate);
-		 	paymentObj.insertPayment(itemCode,customerId, amount, pMethod, cardNo, paymentDate);
+		 	return paymentObj.insertPayment(itemCode,customerId, amount, pMethod, cardNo, paymentDate);
 		 
 		 	
 	 }

@@ -49,6 +49,17 @@ public class BidService {
 		 return bidObj.getBid(itemId, customerId);
 	 }
 	 
+	 @GET
+	 @Path("/{itemId}")
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Produces(MediaType.TEXT_HTML)
+	 public String getBidsForItem(@PathParam("itemId") String itemId ) {
+		 
+		
+		 return bidObj.readBidsForItem(itemId);
+	 }
+	 
+	 
 	 
 	 
 	 
@@ -57,14 +68,14 @@ public class BidService {
 	 @Path("/")
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Produces(MediaType.TEXT_PLAIN)
-	 public void insertBid(@FormParam(value = "itemCode") String itemCode,
+	 public String insertBid(@FormParam(value = "itemCode") String itemCode,
 			 @FormParam(value = "customerId")String customerId,
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "sConditions")String sConditions,
 			 @FormParam(value = "dueDate")String dueDate) {
 		 	System.out.println("IC" +itemCode);
 		 	System.out.println("Amount"+amount);
-		 	bidObj.insertBid(itemCode, customerId, amount, sConditions, dueDate);
+		 	return bidObj.insertBid(itemCode, customerId, amount, sConditions, dueDate);
 		 
 		 	
 	 }
@@ -74,11 +85,11 @@ public class BidService {
 	 @Path("/{bid}")
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Produces(MediaType.TEXT_PLAIN)
-	 public void updateBids(@FormParam(value = "amount") String amount,
+	 public String updateBids(@FormParam(value = "amount") String amount,
 			 @FormParam(value = "sConditions")String sConditions,
 			 @FormParam(value = "dueDate")String dueDate,  @PathParam(value = "bid")String bidId) {
 		 
-		 	bidObj.updateBids(bidId, amount, sConditions, dueDate);
+		 	return bidObj.updateBids(bidId, amount, sConditions, dueDate);
 		 
 		 	
 	 }
@@ -86,11 +97,11 @@ public class BidService {
 
 	 @PUT
 	 @Path("/accepted/{bid}")
-	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	 @Consumes(MediaType.APPLICATION_XML)
 	 @Produces(MediaType.TEXT_PLAIN)
-	 public void updateBidtoAccepted( @PathParam(value = "bid")String bidId) {
+	 public String updateBidtoAccepted( @PathParam(value = "bid")String bidId) {
 		 
-		 	bidObj.updateBidtoAccepted(bidId);
+		 	return bidObj.updateBidtoAccepted(bidId);
 		 
 		 	
 	 }
@@ -98,8 +109,9 @@ public class BidService {
 	 
 	 @DELETE
 	 @Path("/{bid}")
-	 public void deleteBid(@PathParam(value = "bid") String bidId) {
-		 bidObj.deleteBid(bidId);
+	 @Produces(MediaType.TEXT_PLAIN)
+	 public String  deleteBid(@PathParam(value = "bid") String bidId) {
+		 return bidObj.deleteBid(bidId);
 	 }
 	 
 	 
