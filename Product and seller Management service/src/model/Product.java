@@ -199,4 +199,58 @@ public class Product {
 		return output; 
 	 } 
 	
+	///////////////////// return product Type /////////////////////////////////
+	
+	  public String readProductTypes(String ProductType)
+	  {
+	     String output = "";
+	     try
+	     {
+	     Connection con = connect();
+	     if (con == null)
+	     {return "Error while connecting to the database for reading."; }
+	     // Prepare the html table to be displayed
+	     output = "<table border='1'><tr><th>Product ID</th><th>Product Name</th>" +
+	     "<th>Product Type</th>" +
+	     "<th>Minimum Price</th>" +
+	     "<th>Prodyct Description</th>" +
+	     "<th>Add Date</th>" +
+	     "<th>End Date</th>" ;
+	    
+	     String query = "select * from product order by ProductType = ? desc";
+	    
+	     PreparedStatement preparedStatement = con.prepareStatement(query);
+	     preparedStatement.setString(1, ProductType);
+	     ResultSet rs = preparedStatement.executeQuery();
+	     // iterate through the rows in the result set
+	     while (rs.next())
+	     {
+	     String productID = Integer.toString(rs.getInt("ProductID"));
+	     String productName = rs.getString("ProductName");
+	     String productType = rs.getString("ProductType");
+	     String minimumPrice = Double.toString(rs.getDouble("MinimumPrice")); 
+	     String productDescription = rs.getString("ProductDescription");
+	     String addDate = rs.getString("AddDate");
+	     String endDate = rs.getString("ClosingDate");   
+	     // Add into the html table
+	     output += "<tr><td>" + productID + "</td>";
+	     output += "<td>" + productName + "</td>";
+	     output += "<td>" + productType + "</td>";
+	     output += "<td>" + minimumPrice + "</td>";
+	     output += "<td>" + productDescription + "</td>";
+	     output += "<td>" + addDate + "</td>";
+	     output += "<td>" + endDate + "</td>";
+	     }
+	     con.close();
+	     // Complete the html table
+	     output += "</table>";
+	     }
+	     catch (Exception e)
+	     {
+	     output = "Error while reading the Product table .";
+	     System.err.println(e.getMessage());
+	     }
+	     return output;
+	     }
+	
 }

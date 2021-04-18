@@ -131,5 +131,17 @@ public class ProductService {
 	}*/
 	
 	
+	//intercommunication
+    @GET
+    @Path("/readProductType/{productType}") 
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_HTML) 
+    //call read all product method
+    public String readProduct( @PathParam(value = "productType")String ProductType)
+    {
+        return productObj.readProductTypes(ProductType);
+    }
+	
+	
 	
 }
