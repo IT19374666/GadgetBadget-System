@@ -8,6 +8,9 @@ import javax.ws.rs.core.MediaType;
 
 //json
 import com.google.gson.*;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 //xml
 import org.jsoup.*;
@@ -51,4 +54,45 @@ public class ProposalService {
 		return output;
 	}
 
+	@GET
+	@Path("/getProposal/{interest}")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_HTML)
+	public String sendProposals(@PathParam(value = "interest")String interest) {
+		
+		return proposalObj.sendProposals(interest);
+	}
 }
+/*
+@Path("/getProposal")
+public class getProposalService {
+	
+	
+	@GET
+	@Path("/proposal")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getProp(String Interest) {
+		JsonObject propObj = new JsonParser().parse(Interest).getAsJsonObject();
+		String interestArea = propObj.get("interest").getAsString();
+		
+		Client client = Client.create();
+		System.out.println(interestArea);
+		WebResource webResource = client.resource("http://localhost:8090/ResearchAndResearcherManagement/ProposalService/Proposal/getProposal/" +interestArea);
+		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		System.out.println(interestArea);
+		System.out.println(queryResponse);
+		return queryResponse;
+		
+		
+	}
+	
+	
+	
+}*/
+
+
+
+
+
