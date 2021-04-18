@@ -3,6 +3,7 @@ package com;
 import model.Product; 
 
 
+
 //For REST Service
 import javax.ws.rs.*; 
 import javax.ws.rs.core.MediaType; 
@@ -21,8 +22,8 @@ import org.jsoup.nodes.Document;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;*/
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;*/
 
 @Path("/Product")
 public class ProductService {
@@ -94,26 +95,40 @@ public class ProductService {
 	}
 	
 	
-	
+	// Intercommunication
 	@PUT
-	@Path("/acceptBid/{bid}") 
+	@Path("/acceptBid/{BID}") 
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN) 
-	public String acceptBid(@PathParam(value= "bid") String BID) 
+	public String acceptBid(@PathParam(value = "BID")String bidId) 
 	{
-	
-		System.out.println(BID);
 		//interprocess communication
 		Client client = Client.create();
-		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/accepted/"+BID);
+		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/accepted/" + bidId);
 		ClientResponse response = webResource.type("application/xml").put(ClientResponse.class);
 		String queryResponse = response.getEntity(String.class);
 		
 		System.out.println(queryResponse);
 	
 		return queryResponse;
-		//return productObj.readAllProduct();
 	}
+	
+	
+	/*@GET
+	@Path("/readBit") 
+	@Produces(MediaType.TEXT_HTML) 
+	//call read all product method
+	public String readBid()
+	{
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/readBids/");
+		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		
+		System.out.println(queryResponse);
+	
+		return queryResponse;
+	}*/
 	
 	
 	
