@@ -8,6 +8,9 @@ import javax.ws.rs.core.MediaType;
 
 //For JSON
 import com.google.gson.*; 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 //For XML
 import org.jsoup.*; 
@@ -82,9 +85,27 @@ public class FundingService {
 	return output; 
 	}
 	
-	
+	//intercommunication - researcher request to retrieve all funding bodies
+	@GET
+	@Path("/readFbody/{interestArea}") 
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_HTML) 
+	//call read all funding bodies method
+	public String readFbody( @PathParam(value = "interestArea")String InterestArea)
+	{
+		
+
+		return FundingBoadyObj.RequestReadFundingBodies(InterestArea) ;
+	}
 
 	
+	/*Client client = Client.create();
+	WebResource webResource = client.resource("");
+	ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+	String queryResponse = response.getEntity(String.class);
+	
+	System.out.println(queryResponse);
 
+	return queryResponse;*/
 
 }

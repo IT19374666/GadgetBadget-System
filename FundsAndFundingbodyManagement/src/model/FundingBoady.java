@@ -164,34 +164,7 @@ public class FundingBoady {
 	}
 	
 	
-	//Delete funding body details
-	
-	/*public String deleteFundingBody(String idFundingBody) 
-	 { 
-	 String output = ""; 
-	 System.out.println(idFundingBody);
-	 try
-	 { 
-	 Connection con = connect(); 
-	 if (con == null) 
-	 {return "Error while connecting to the database for deleting."; } 
-	 // create a prepared statement
-	 String query = "delete from fundingbody where `idFundingBody`=?"; 
-	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-	 // binding values
-	 preparedStmt.setInt(1, Integer.parseInt(idFundingBody)); 
-	 // execute the statement
-	 preparedStmt.execute(); 
-	 con.close(); 
-	 output = "Deleted successfully"; 
-	 } 
-	 catch (Exception e) 
-	 { 
-	 output = "Error while deleting the funding body detail."; 
-	 System.err.println(e.getMessage()); 
-	 } 
-	 return output; 
-	 }*/
+
 	
 	public String deleteFundingBody(String fundingBodyID) 
 	 { 
@@ -218,6 +191,62 @@ public class FundingBoady {
 	 } 
 	 return output; 
 	 }
+	
+	//method for retrieve all funding bodies details when researcher request
+	
+	public String RequestReadFundingBodies(String InterestArea) 
+	 { 
+	 String output = ""; 
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for reading."; } 
+	 // Prepare the html table to be displayed
+	 output = "<table border='1'><tr><th>Funding Body ID</th><th>Name</th>" +
+	 "<th>Email</th>" + 
+	 "<th>Address</th>" + 
+	 "<th>Phone number</th>" +
+	 "<th>Interest Area</th>" +
+	 "<th>Fund Range</th>" ; 
+	 
+	 String query = "select * from fundingbody order by interestArea = ? desc"; 
+	 
+	 PreparedStatement preparedStatement = con.prepareStatement(query);
+	 preparedStatement.setString(1, InterestArea); 
+	 ResultSet rs = preparedStatement.executeQuery();
+	 // iterate through the rows in the result set
+	 while (rs.next()) 
+	 { 
+	 String stakeholderID = Integer.toString(rs.getInt("idFundingBody")); 
+	 String name = rs.getString("name"); 
+	 String email = rs.getString("email"); 
+	 String address = rs.getString("address"); 
+	 String phone = Integer.toString(rs.getInt("phone")); 
+	 String interestArea = rs.getString("interestArea"); 
+	 String fund_range = Double.toString(rs.getDouble("fund_range"));    
+	 // Add into the html table
+	 output += "<tr><td>" + stakeholderID + "</td>"; 
+	 output += "<td>" + name + "</td>";
+	 output += "<td>" + email + "</td>"; 
+	 output += "<td>" + address + "</td>"; 
+	 output += "<td>" + phone + "</td>"; 
+	 output += "<td>" + interestArea + "</td>";
+	 output += "<td>" + fund_range + "</td>"; 
+	 } 
+	 con.close(); 
+	 // Complete the html table
+	 output += "</table>"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while reading the funding bodies ."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 }
+	
+	
 	
 
 	
