@@ -294,7 +294,7 @@ public class Product {
 	
 	  
 	  ////////////////////////////////// update product Status//////////////////////////////	
-	  public String updateSoldProduct(String ProductID)
+	  public String updateSoldProduct(String ProductID,String CustomerID)
 	  {
 		  String output = "";
 		  String status = "Sold";
@@ -304,12 +304,13 @@ public class Product {
 				return "Error while connecting to the database";
 			}
 			// create a prepared statement
-			String query = "update product set `ProductStatus` = ?  where `ProductID` = ?";		
+			String query = "update product set `ProductStatus`=?,`CustomerID` = ?  where `ProductID` = ?";		
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
 			preparedStmt.setString(1, status);
-			preparedStmt.setInt(2, Integer.parseInt(ProductID));
+			preparedStmt.setString(2, CustomerID);
+			preparedStmt.setInt(3, Integer.parseInt(ProductID));
 
 			//execute the statement
 			preparedStmt.executeUpdate();

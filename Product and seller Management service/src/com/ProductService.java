@@ -175,12 +175,12 @@ public class ProductService {
     
     //Update product table as product is sold
     @PUT
-	 @Path("/updateStatus/{productId}")
+	 @Path("/updateStatus/{productId}/{CustomerID}")
 	 @Consumes(MediaType.APPLICATION_XML)
 	 @Produces(MediaType.TEXT_PLAIN)
-	 public String updateBidtoAccepted( @PathParam(value = "productId")String ProductId) {
+	 public String updateBidtoAccepted( @PathParam(value = "productId")String ProductId,@PathParam(value = "CustomerID")String customerID) {
 		 
-		 	return productObj.updateSoldProduct(ProductId);	 	
+		 	return productObj.updateSoldProduct(ProductId,customerID);	 	
 	 }
 	
 	
