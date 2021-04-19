@@ -286,6 +286,95 @@ public class FundingBoady {
 		
 	}
 	
+	//method for update funds table after view progress of the stage for a particular stage
+	
+	
+		public String updateFundingStage(String idFundingBody,String name,String email,String address,String phone,String interestArea, String fund_range) {
+		
+		String output = ""; 
+		int researcherID;
+		int stage =0;
+		
+		 try
+		 { 
+		 Connection con = connect(); 
+		 if (con == null) 
+		 {return "Error while connecting to the database for updating the funding stage."; } 
+		 // create a prepared statement
+		 
+
+		 String query = "UPDATE funds SET name=?,email=?,address=?,phone=?,interestArea=?,fund_range=? WHERE idFundingBody=?"; 
+		 PreparedStatement preparedStmt = con.prepareStatement(query); 
+		 // binding values
+		 preparedStmt.setString(1, name); 
+		 preparedStmt.setString(2, email);
+		 preparedStmt.setString(3, address);
+		 preparedStmt.setInt(4, Integer.parseInt(phone));
+		 preparedStmt.setString(5, interestArea); 
+		 preparedStmt.setInt(6, Integer.parseInt(fund_range));
+		 preparedStmt.setInt(7, Integer.parseInt(idFundingBody)); 
+		 
+		 // execute the statement
+		 preparedStmt.execute(); 
+		 con.close(); 
+		 output = "Updated successfully"; 
+		 } 
+		 catch (Exception e) 
+		 { 
+		 output = "Error while updating funding body details..."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		 return output; 
+		
+	}
+	
+	//insert funds table specific columns when a research is accepted by a funding body
+		public String insertStartupFundsDetails(String researchID,String fundingBodyID,String currentStage,String fundsForCurrentStage,String totalFunds, String description) {
+			
+			String output = "";
+			
+			try
+			 { 
+			 Connection con = connect(); 
+			
+			 if (con == null) 
+			 {return "Error while connecting to the database for inserting funds details."; } 
+			 // create a prepared statement
+			 String query = "insert into funds (`researchID`,`fundingBodyID`,`currentStage`,`fundsForCurrentStage`,`totalFunds`,`description`)"+ "values (?,?,?,?,?,?)"; 
+		
+			 PreparedStatement preparedStmt = con.prepareStatement(query); 
+			 // binding values
+			 preparedStmt.setInt(1, 0); 
+			
+			 preparedStmt.setInt(2, Integer.parseInt(researchID)); 
+			 preparedStmt.setInt(3, Integer.parseInt(fundingBodyID)); 
+			 preparedStmt.setInt(4, Integer.parseInt(currentStage));;
+			 preparedStmt.setDouble(5, Double.parseDouble(fundsForCurrentStage));
+			 preparedStmt.setDouble(6, Double.parseDouble(totalFunds));
+			 preparedStmt.setString(2, description); 
+			 
+			 
+			
+			 //execute statement
+			 preparedStmt.execute(); 
+			 con.close(); 
+			 output = "Inserted funds details for start up resaerches successfully"; 
+			 } 
+			 catch (Exception e) 
+			 { 
+			 output = "Error while inserting the funds details for start up resaerches."; 
+			 System.err.println(e.getMessage()); 
+			 }
+			 
+			 
+			return output;
+			
+			
+		}
+		
+	
+	
+	
 	
 
 	

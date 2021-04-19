@@ -113,7 +113,20 @@ public class FundingService {
 		return FundingBoadyObj.currentFundedStage(ResearchID) ;
 	}
 	
-	
+	@POST
+	@Path("/insertFundsStartDetails") 
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String insertFundsStartDetails(@FormParam("researchID") String researchID, 
+	 @FormParam("fundingBodyID") String fundingBodyID, 
+	 @FormParam("currentStage") String currentStage, 
+	 @FormParam("fundsForCurrentStage") String fundsForCurrentStage,
+	 @FormParam("totalFunds") String totalFunds, 
+	 @FormParam("description") String description)
+	{ 
+	 String output = FundingBoadyObj.insertFundingBody(researchID, fundingBodyID, currentStage, fundsForCurrentStage,totalFunds,description); 
+	return output; 
+	}
 	
 	
 	
