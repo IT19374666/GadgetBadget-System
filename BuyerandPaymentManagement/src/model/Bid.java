@@ -1,7 +1,7 @@
 package model;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -175,8 +175,7 @@ public class Bid {
 		}
 		
 		
-		//select bids for one item
-		
+		//select bids for an item	
 		public String readBidsForItem(String itemId) {
 				String output = "";
 				try {
@@ -193,7 +192,7 @@ public class Bid {
 							+ "<th>Special Conditions</th>"
 							+ "<th>Due date</th>"
 							+ "<th>Accepted</th></tr>";
-					String query = "select * from bids where itemCode = ? ";
+					String query = "select * from bids where itemCode = ?  order by amount desc";
 					PreparedStatement preparedStatement = con.prepareStatement(query);
 					preparedStatement.setString(1, itemId);
 					
@@ -228,6 +227,45 @@ public class Bid {
 				}
 				return output;
 		}
+		
+		//select the lowest bid
+		public String getLowestBid(String itemId) {
+					String output = "";
+					
+					try {
+						Connection con = this.connect();
+						if (con == null) {
+							return "Error while connecting to retrieve a specific bid";
+						}		
+						
+						String query = "select bidid from bids where itemCode = ? and amount In (select Min(amount) from bids where itemCode = ? group by itemCode) ";
+						PreparedStatement preparedStatement = con.prepareStatement(query);
+						preparedStatement.setString(1, itemId);
+						preparedStatement.setString(2, itemId);
+						ResultSet rs = preparedStatement.executeQuery();
+						
+						if (rs.next()) {	
+							String bidId = rs.getString("bidid");
+							
+							output = bidId;
+							
+						
+						
+
+						}
+						
+						con.close();			
+						
+					} catch (Exception e) {
+						output = "Error while getting bid ";
+						System.err.println(e.getMessage());
+					}
+					
+					return output;
+				}
+				
+				
+		
 				
 		
 		//Update bid details

@@ -59,6 +59,15 @@ public class BidService {
 		 return bidObj.readBidsForItem(itemId);
 	 }
 	 
+	 @GET
+	 @Path("LowestBid/{itemId}")
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Produces(MediaType.TEXT_HTML)
+	 public String getHighestBid(@PathParam("itemId") String itemId ) {
+		 
+		
+		 return bidObj.getLowestBid(itemId);
+	 }
 	 
 	 
 	 
