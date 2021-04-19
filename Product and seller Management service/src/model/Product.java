@@ -278,11 +278,10 @@ public class Product {
 			  	  {
 			  		  String minimumPrice = Double.toString(rs.getDouble("MinimumPrice")); 
 			  		  // Add into the html table
-			  		  output +=  minimumPrice;
+			  		  output =  minimumPrice;
 			  	  }
 			  	  con.close();
 			  	  // Complete the html table
-			  	  output += "</table>";
 		  }
 		  catch (Exception e)
 		  {
@@ -321,8 +320,38 @@ public class Product {
 			System.err.println(e.getMessage());
 	 	}
 	 	
+		return output;	
+	}
+	  
+	  //////////////////////////////////// Update the current Product Minimum Price /////////////////////////////////
+	  public String updateCurrentProductPrice(String ProductID,String insertProductPrice)
+	  {
+		  String output = "";
+		  try {
+			Connection con = connect();
+			if (con == null){
+				return "Error while connecting to the database";
+			}
+			// create a prepared statement
+			String query = "update product set `MinimumPrice`=?  where `ProductID` = ?";		
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			// binding values
+			preparedStmt.setDouble(1, Double.parseDouble(insertProductPrice));
+			preparedStmt.setInt(2, Integer.parseInt(ProductID));
+
+			//execute the statement
+			preparedStmt.executeUpdate();
+			con.close();
+			output = "Product Current Price Updated successfully";
+		}catch (Exception e) {
+			output = "Error while updating Product Current Price";
+			System.err.println(e.getMessage());
+	 	}
+	 	
 		return output;
 		
 		
 	}
+	  
 }

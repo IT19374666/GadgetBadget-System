@@ -158,7 +158,7 @@ public class ProductService {
     
     //Intercommunication - use API with client for validate to minimum value 
     @GET
-	@Path("/readBid/{BID}") 
+	@Path("/readLowestBid/{BID}") 
 	@Produces(MediaType.TEXT_HTML) 
 	//call read all product method
 	public String readBid(@PathParam(value = "BID")String bidId)
@@ -183,6 +183,52 @@ public class ProductService {
 		 	return productObj.updateSoldProduct(ProductId,customerID);	 	
 	 }
 	
+    
+    //Update product table minimum price
+     @PUT
+	 @Path("/updateProductMinimumPrice/{productId}")
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Produces(MediaType.TEXT_PLAIN)
+	 public String updateProductMinimumPrice( @PathParam(value = "productId")String ProductId,String ProductPriceData) {
+    	 
+    	//Convert the input string to a JSON object 
+		 JsonObject pObject = new JsonParser().parse(ProductPriceData).getAsJsonObject(); 
+		 
+		//Read the values from the JSON object
+		 String productPrice = pObject.get("MinimumPrice").getAsString();
+		 double insertedProductPrice = Double.parseDouble(productPrice);
+    	
+    	Client client = Client.create();
+		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/LowestBid/" +ProductId);
+		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		System.out.println("1" + queryResponse);
+		double minimumBidPrice = Double.parseDouble(queryResponse);
+		
+		Client client1 = Client.create();
+		WebResource webResource1 = client1.resource("http://localhost:8085/ProductAndSellerManagementService/ProductService/Product/readProductMinimumPrice/" +ProductId);
+		System.out.println(ProductId);
+		ClientResponse response1 = webResource1.type("application/xml").get(ClientResponse.class);
+		String queryResponse1 = response1.getEntity(String.class);
+		System.out.println("2" + queryResponse1);
+		double minimumProductPrice = Double.parseDouble(queryResponse1);
+		
+		
+		 
+		 if(minimumProductPrice < insertedProductPrice) {
+			 if(minimumBidPrice > insertedProductPrice) {
+				 return productObj.updateCurrentProductPrice(ProductId, productPrice);
+			 }
+			 else {
+				 return "Inserted Product Minimum Price greater than to the Buyers Minimum Bid Price";
+			 }
+		 }
+		 else {
+			 return "Inserted Product Minimum Price less than to the Previous Minimum Product Price ";
+		 }
+		
+		 		 	
+	 }
 	
 	
 }
