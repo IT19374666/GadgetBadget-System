@@ -26,7 +26,7 @@ import com.sun.jersey.api.client.WebResource;
  */
 @Path("/payment")
 public class PaymentService {
-	/*String itemCode, String amount, String pMethod, String cardNo,String paymentDate*/
+
 	
 	 Payment paymentObj = new Payment();
 	 @POST
@@ -43,20 +43,19 @@ public class PaymentService {
 		 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 		 	String paymentDate = formatter.format( new Date());
 		 	
-		 	/*
+		 	
 		 	//Implementation of the interprocess communication for payment 
 		 	Client client = Client.create();
 		 
-		 	WebResource webResource = client.resource("http://localhost:8088/BuyerandPaymentManagement/BuyerandPaymentService/Bid/accepted/4");
-		 	System.out.println(webResource);
+		 	WebResource webResource = client.resource("http://localhost:8088/ProductAndSellerManagementService/ProductService/Product/updateStatus/" +itemCode +"/" +customerId);
 		 	ClientResponse response = webResource.type("application/xml").put(ClientResponse.class);
-		 	System.out.println("Res :"
-	+response);
+		 	//System.out.println("Res :" +response);
+		 	
 		 	String queryRespose = response.getEntity(String.class);
 		 	
-		 	System.out.println(queryRespose);
-		 	*/
-		 	//System.out.println(paymentDate);
+		 	//System.out.println(queryRespose);
+		 	
+		 	
 		 	return paymentObj.insertPayment(itemCode,customerId, amount, pMethod, cardNo, paymentDate);
 		 
 		 	

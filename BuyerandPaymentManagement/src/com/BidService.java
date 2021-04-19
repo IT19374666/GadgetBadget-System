@@ -15,6 +15,10 @@ import org.jsoup.*;
 import org.jsoup.parser.*;
 import org.jsoup.nodes.Document;
 
+//For interprocess communication 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 /**
  * @author IT19374666
@@ -84,7 +88,25 @@ public class BidService {
 			 @FormParam(value = "dueDate")String dueDate) {
 		 	System.out.println("IC" +itemCode);
 		 	System.out.println("Amount"+amount);
-		 	return bidObj.insertBid(itemCode, customerId, amount, sConditions, dueDate);
+		 	
+		 	//Implementation of the interprocess communication to validate bid amount 
+		 	Client client = Client.create();
+		 	WebResource webResource = client.resource("http://localhost:8088/ProductAndSellerManagementService/ProductService/Product/readProductMinimumPrice/" + itemCode);
+		 	
+		 
+		 	ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		 	//System.out.println("Res :"+response);
+		 	String queryResponse = response.getEntity(String.class);
+		 	double minimum = Double.parseDouble(queryResponse);
+		 	double inputAmount = Double.parseDouble(amount);
+		 	System.out.println(queryResponse);
+		 	if(minimum <= inputAmount ) {
+		 	
+		 		return bidObj.insertBid(itemCode, customerId, amount, sConditions, dueDate);
+		 	}
+		 	else {
+		 		return "Bid amount is less than the required !!!";
+		 	}
 		 
 		 	
 	 }
