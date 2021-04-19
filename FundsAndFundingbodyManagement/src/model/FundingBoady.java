@@ -246,6 +246,45 @@ public class FundingBoady {
 	 return output; 
 	 }
 	
+	//method for Return currently funded stage to the researcher for a particular research
+	
+	public String currentFundedStage(String resaerchID) {
+		String output="";
+		try
+		 { 
+		 Connection con = connect(); 
+		 if (con == null) 
+		 {return "Error while connecting to the database for reading current stage."; } 
+	
+
+		 
+		 String query = "select currentStage from funds where researchID =?;"; 
+		 
+		 PreparedStatement preparedStatement = con.prepareStatement(query);
+		 preparedStatement.setString(1, resaerchID); 
+		 ResultSet rs = preparedStatement.executeQuery();
+		 // iterate through the rows in the result set
+		 while (rs.next()) 
+		 { 
+		 String currentlyFundedStage = Integer.toString(rs.getInt("currentStage")); 
+  
+
+		 output =currentlyFundedStage; 
+ 
+		 } 
+		 con.close(); 
+
+		 } 
+		 catch (Exception e) 
+		 { 
+		 output = "Error while reading the currently funded stage ."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		
+		
+		return output;
+		
+	}
 	
 	
 

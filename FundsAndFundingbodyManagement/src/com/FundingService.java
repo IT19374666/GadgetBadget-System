@@ -97,7 +97,28 @@ public class FundingService {
 
 		return FundingBoadyObj.RequestReadFundingBodies(InterestArea) ;
 	}
+	
+	
+	//Return currently funded stage to the researcher for a particular research
 
+	@GET
+	@Path("/readCurrentStage/{researchID}") 
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_HTML) 
+	//call read all funding bodies method
+	public String readCurrentStage( @PathParam(value = "researchID")String ResearchID)
+	{
+		
+
+		return FundingBoadyObj.currentFundedStage(ResearchID) ;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	/*Client client = Client.create();
 	WebResource webResource = client.resource("");
