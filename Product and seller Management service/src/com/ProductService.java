@@ -131,7 +131,7 @@ public class ProductService {
 	}*/
 	
 	
-	//intercommunication
+	//intercommunication - 
     @GET
     @Path("/readProductType/{productType}") 
     @Consumes(MediaType.APPLICATION_XML)
@@ -140,6 +140,18 @@ public class ProductService {
     public String readProduct( @PathParam(value = "productType")String ProductType)
     {
         return productObj.readProductTypes(ProductType);
+    }
+    
+    
+  //intercommunication - for return product minimum value
+    @GET
+    @Path("/readProductMinimumPrice/{productID}") 
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_HTML) 
+    //call read all product method
+    public String readProductMinimumPrice( @PathParam(value = "productID")String ProductID)
+    {
+        return productObj.readProductMinimumValue(ProductID);
     }
 	
 	

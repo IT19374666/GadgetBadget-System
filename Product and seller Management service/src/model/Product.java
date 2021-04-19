@@ -252,5 +252,43 @@ public class Product {
 	     }
 	     return output;
 	     }
+	  
+	  
+	  ////////////////////////////////// return product minimum value //////////////////////////////	
+	  public String readProductMinimumValue(String ProductID)
+	  {
+		  String output = "";
+		  try
+		  {
+			  Connection con = connect();
+			  if (con == null)
+			  {
+				  return "Error while connecting to the database for reading."; }
+			  	  // Prepare the html table to be displayed
+			  	  //output = "<table border='1'><tr> <th>Minimum Price</th></tr>";
+
+			  	  String query = "select ProductID,ProductName,MinimumPrice from product where ProductID = ?";
+
+			  	  PreparedStatement preparedStatement = con.prepareStatement(query);
+			  	  preparedStatement.setString(1, ProductID);
+			  	  ResultSet rs = preparedStatement.executeQuery();
+			  	  // iterate through the rows in the result set
+			  	  while (rs.next())
+			  	  {
+			  		  String minimumPrice = Double.toString(rs.getDouble("MinimumPrice")); 
+			  		  // Add into the html table
+			  		  output +=  minimumPrice;
+			  	  }
+			  	  con.close();
+			  	  // Complete the html table
+			  	  output += "</table>";
+		  }
+		  catch (Exception e)
+		  {
+			  output = "Error while reading the Product table Minumum price.";
+			  System.err.println(e.getMessage());
+		  }
+		  return output;
+	  }
 	
 }
