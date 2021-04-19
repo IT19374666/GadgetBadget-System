@@ -26,7 +26,7 @@ public class Product {
 	
 	////////////////Insert Product///////////////////////////////
 	
-	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate) 
+	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate,String SellerID) 
 	{ 
 		String output = "";
 
@@ -39,8 +39,8 @@ public class Product {
 			} 
 			
 			// create a prepared statement
-			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`) "+
-							" values (?, ?, ?, ?, ?, ?, ?)"; 
+			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`,`SellerID`) "+
+							" values (?, ?, ?, ?, ?, ?, ?,?)"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query1); 
 			
 			// binding values
@@ -51,6 +51,7 @@ public class Product {
 			preparedStmt.setString(5, productDescription);
 			preparedStmt.setString(6, productAddDate);
 			preparedStmt.setString(7, productEndDate);
+			preparedStmt.setString(8, SellerID);
 			
 			// execute the statement3
 			preparedStmt.execute(); 
@@ -291,4 +292,36 @@ public class Product {
 		  return output;
 	  }
 	
+	  
+	  ////////////////////////////////// update product Status//////////////////////////////	
+	  public String updateSoldProduct(String ProductID)
+	  {
+		  String output = "";
+		  String status = "Sold";
+		  try {
+			Connection con = connect();
+			if (con == null){
+				return "Error while connecting to the database";
+			}
+			// create a prepared statement
+			String query = "update product set `ProductStatus` = ?  where `ProductID` = ?";		
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			// binding values
+			preparedStmt.setString(1, status);
+			preparedStmt.setInt(2, Integer.parseInt(ProductID));
+
+			//execute the statement
+			preparedStmt.executeUpdate();
+			con.close();
+			output = "Product Status Updated successfully";
+		}catch (Exception e) {
+			output = "Error while updating Product Status";
+			System.err.println(e.getMessage());
+	 	}
+	 	
+		return output;
+		
+		
+	}
 }

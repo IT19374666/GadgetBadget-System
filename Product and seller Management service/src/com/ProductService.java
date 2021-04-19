@@ -40,7 +40,7 @@ public class ProductService {
 	
 	
 	@POST
-	@Path("/") 
+	@Path("/Insert/{SellerID}") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertProduct(
@@ -49,9 +49,10 @@ public class ProductService {
 			@FormParam("MinimumPrice") String MinimumPrice, 
 			@FormParam("ProductDescription") String ProductDescription,
 			@FormParam("AddDate") String AddDate,
-			@FormParam("ClosingDate") String ClosingDate) 
+			@FormParam("ClosingDate") String ClosingDate,
+			@PathParam("SellerID") String SellerID)
 	{
-	 		String output = productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, AddDate, ClosingDate); 
+	 		String output = productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, AddDate, ClosingDate,SellerID); 
 	 		return output;
 	}
 	
@@ -153,6 +154,34 @@ public class ProductService {
     {
         return productObj.readProductMinimumValue(ProductID);
     }
+    
+    
+    //Intercommunication - use API with client for validate to minimum value 
+    @GET
+	@Path("/readBid/{BID}") 
+	@Produces(MediaType.TEXT_HTML) 
+	//call read all product method
+	public String readBid(@PathParam(value = "BID")String bidId)
+	{
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://localhost:8085/BuyerandPaymentManagement/BuyerandPaymentService/Bid/LowestBid/" + bidId);
+		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		
+		System.out.println(queryResponse);
+	
+		return queryResponse;
+	}
+    
+    //Update product table as product is sold
+    @PUT
+	 @Path("/updateStatus/{productId}")
+	 @Consumes(MediaType.APPLICATION_XML)
+	 @Produces(MediaType.TEXT_PLAIN)
+	 public String updateBidtoAccepted( @PathParam(value = "productId")String ProductId) {
+		 
+		 	return productObj.updateSoldProduct(ProductId);	 	
+	 }
 	
 	
 	
