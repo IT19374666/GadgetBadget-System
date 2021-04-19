@@ -9,6 +9,9 @@ import javax.ws.rs.core.MediaType;
 
 //json
 import com.google.gson.*;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 //xml
 import org.jsoup.*;
@@ -92,6 +95,46 @@ public class ResearchService {
 		String output = researchObj.deleteResearch(ID);
 		
 		return output;
+		
+	}
+	
+	
+	
+//INTERCOMMUNICATION	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	//send research progress to funding body service
+	@GET
+	@Path("/getProgress/{research_ID}")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_HTML)
+	public String sendProposals(@PathParam(value = "research_ID")String research_ID) {
+		
+		//return proposalObj.sendProposals(research_ID);
+		return researchObj.sendResearchProgress(research_ID);
+	}
+	
+	@GET
+	@Path("/getFundingStage")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getProp(String resID) {
+		JsonObject resObj = new JsonParser().parse(resID).getAsJsonObject();
+		String researchID = resObj.get("researchID").getAsString();
+		
+		Client client = Client.create();
+		//System.out.println(researchID);
+		WebResource webResource = client.resource("http://localhost:8090/ResearchAndResearcherManagement/ProposalService/Proposal/getProposal/" +researchID);
+		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
+		String queryResponse = response.getEntity(String.class);
+		//System.out.println(interestArea);
+		//System.out.println(queryResponse);
+		
+		return researchObj.updateResearchStatus(queryResponse, researchID);
+		
+		
+		
+		//return queryResponse;
+		
 		
 	}
 	

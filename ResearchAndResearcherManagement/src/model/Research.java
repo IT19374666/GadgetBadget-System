@@ -3,6 +3,7 @@ import java.sql.*;
 
 public class Research {
 	
+	//CREATE DATABASE CONNECTION
 	private Connection connect() {
 		
 		Connection con = null;
@@ -20,6 +21,7 @@ public class Research {
 		return con;
 	}
 	
+	//INSERT NEW RESEARCH
 	public String insertResearch(String res_topic, String res_area, String status, String progress, String res_ID) {
 		
 		String output = "";
@@ -60,6 +62,7 @@ public class Research {
 		return output;
 	}
 	
+	//READ RESEARCHES
 	public String readResearches() {
 		String output = "";
 		try {
@@ -124,7 +127,7 @@ public class Research {
 		return output;
 	}
 	
-	
+	//UPDATE RESEARCH DETAILS
 	public String updateResearch(String ID, String topic, String area, String status, String progress) {
 		String output = "";
 		
@@ -161,6 +164,7 @@ public class Research {
 		return output;
 	}
 	
+	//DELETE RESEARCHES
 	public String deleteResearch(String ID) {
 		String output = "";
 		
@@ -188,6 +192,80 @@ public class Research {
 			System.err.println(e.getMessage());
 		}
 		return output;
+	}
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//SEND RESEARCH PROGRESS TO FUNDING BODIES
+	public String sendResearchProgress(String resID) {
+		String output = "";
+		try {
+			Connection con = connect();
+			if(con == null) {
+				return "Error while connecting to the database for sending research progress";
+			}
+			
+			String query = "SELECT * FROM research WHERE research_ID = ?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			preparedStmt.setInt(1, Integer.parseInt(resID));
+			ResultSet rs = preparedStmt.executeQuery();
+			
+			//iterate through the rows in rs
+			while(rs.next()) {
+				String progress = rs.getString("progress");
+				output = progress;
+			}
+			con.close();
+		}
+		catch(Exception e) {
+			output = "Error while reading the progress stage ."; 
+			 System.err.println(e.getMessage()); 
+		}
+		
+		return output;
+		
+	}
+	
+	//UPDATE RESEARCH STATUS AFTER RECIEVING FUNDS
+	public String updateResearchStatus(String stage, String ID) {
+		String status = "";
+		String output = "";
+		
+		try {
+			Connection con = connect();
+			if(con == null) {
+				return "Error while connecting to the database for updating status";
+			}
+			if(stage == "2")
+				status = "Stage 2 in progress.";
+			
+			else if(stage == "3")
+				status = "Stage 3 in progress.";
+			
+			else
+				status = "Stage 4 in progress.";				
+		
+			String query = "UPDATE research SET status=? WHERE research_ID=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			preparedStmt.setString(1, status);
+			preparedStmt.setInt(2, Integer.parseInt(ID));
+			
+			preparedStmt.execute();
+			con.close();
+			
+			output = "Status updated successfully";
+		
+		
+		}
+		catch(Exception e) {
+			output = "Error while updating the status";
+			System.err.println(e.getMessage());
+		}
+		return output;
+		
 	}
 
 }

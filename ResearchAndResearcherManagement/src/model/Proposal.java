@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.*; 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime; 
 
 public class Proposal {
 	
@@ -21,7 +23,13 @@ public class Proposal {
 		return con;
 	}
 	
-	public String insertProposal(String desc, String date, String resID) {
+	//public String insertProposal(String desc, String date, String resID) {
+	public String insertProposal(String desc,String resID) {	
+		
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		
 		
 		String output = "";
 		
@@ -39,10 +47,17 @@ public class Proposal {
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			//binding values
-			preparedStmt.setInt(1,0);
+			/*preparedStmt.setInt(1,0);
 			preparedStmt.setString(2, desc);
 			preparedStmt.setDate(3, Date.valueOf(date));
+			preparedStmt.setInt(4, Integer.parseInt(resID));*/
+			
+			preparedStmt.setInt(1,0);
+			preparedStmt.setString(2, desc);
+			preparedStmt.setString(3, dtf.format(now));
 			preparedStmt.setInt(4, Integer.parseInt(resID));
+			
+			
 			
 			
 			//execute the statement

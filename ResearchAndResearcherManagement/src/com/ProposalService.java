@@ -45,15 +45,19 @@ public class ProposalService {
 		
 		//read the values from the JSON object
 		String desc = propObj.get("description").getAsString();
-		String date = propObj.get("date").getAsString();
+		//String date = propObj.get("date").getAsString();
 		String res_ID = propObj.get("research_ID").getAsString();
 		
 		
-		String output = proposalObj.insertProposal(desc, date, res_ID);
+		//String output = proposalObj.insertProposal(desc, date, res_ID);
+		String output = proposalObj.insertProposal(desc, res_ID);
 		
 		return output;
 	}
 
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//SEND RESEARCH PROPOSALS TO FUNDING BODIES
 	@GET
 	@Path("/getProposal/{interest}")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -63,6 +67,10 @@ public class ProposalService {
 		return proposalObj.sendProposals(interest);
 	}
 }
+
+
+
+
 /*
 @Path("/getProposal")
 public class getProposalService {
