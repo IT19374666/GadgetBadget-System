@@ -26,9 +26,10 @@ public class Product {
 	
 	////////////////Insert Product///////////////////////////////
 	
-	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate,String SellerID) 
+	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate,String SellerID,String ProductStatus) 
 	{ 
 		String output = "";
+		String productStatus = "Available";
 
 		try
 		{ 
@@ -39,8 +40,8 @@ public class Product {
 			} 
 			
 			// create a prepared statement
-			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`,`SellerID`) "+
-							" values (?, ?, ?, ?, ?, ?, ?,?)"; 
+			String query1 = " insert into product(`ProductID`,`ProductName`,`ProductType`,`MinimumPrice`,`ProductDescription`,`AddDate`,`ClosingDate`,`SellerID`,`ProductStatus`) "+
+							" values (?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query1); 
 			
 			// binding values
@@ -52,6 +53,7 @@ public class Product {
 			preparedStmt.setString(6, productAddDate);
 			preparedStmt.setString(7, productEndDate);
 			preparedStmt.setString(8, SellerID);
+			preparedStmt.setString(9, productStatus);
 			
 			// execute the statement3
 			preparedStmt.execute(); 
