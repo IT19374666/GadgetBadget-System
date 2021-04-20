@@ -168,6 +168,12 @@ public class Researcher {
 			preparedStmt.setInt(1, Integer.parseInt(resID));
 			
 			preparedStmt.execute();
+			
+			////////////////////////////////////////////////////////////
+			
+			
+			
+			///////////////////////////////////////////////////////////
 			con.close();
 			
 			output = "Deleted successfully";

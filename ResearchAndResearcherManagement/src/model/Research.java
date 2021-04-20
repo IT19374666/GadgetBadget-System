@@ -228,13 +228,13 @@ public class Research {
 	}
 	
 	//UPDATE RESEARCH STATUS AFTER RECIEVING FUNDS
-	public String updateResearchStatus(String stage, String ID) {
-		String status = "";
+	public String updateResearchStatus(String status, String ID) {
+		//String status = "";
 		String output = "";
 		
 		try {
 			Connection con = connect();
-			if(con == null) {
+			/*if(con == null) {
 				return "Error while connecting to the database for updating status";
 			}
 			if(stage == "2")
@@ -244,7 +244,7 @@ public class Research {
 				status = "Stage 3 in progress.";
 			
 			else if(stage == "4")
-				status = "Stage 4 in progress.";				
+				status = "Stage 4 in progress.";	*/			
 		
 			String query = "UPDATE research SET status=? WHERE research_ID=?";
 			

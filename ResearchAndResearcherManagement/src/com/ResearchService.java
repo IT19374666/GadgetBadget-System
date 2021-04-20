@@ -113,13 +113,13 @@ public class ResearchService {
 		return researchObj.sendResearchProgress(research_ID);
 	}
 	
-	//funded stage from funding body service
-	@GET
+	//request funded stage from funding body service
+	@PUT
 	@Path("/getFundingStage")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getProp(String resID) {
-		JsonObject resObj = new JsonParser().parse(resID).getAsJsonObject();
+	public String getProp(String ResearchID) {
+		JsonObject resObj = new JsonParser().parse(ResearchID).getAsJsonObject();
 		String researchID = resObj.get("researchID").getAsString();
 		
 		Client client = Client.create();
@@ -128,9 +128,23 @@ public class ResearchService {
 		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
 		String queryResponse = response.getEntity(String.class);
 		//System.out.println(interestArea);
-		//System.out.println(queryResponse);
+		System.out.println(queryResponse);
 		
-		return researchObj.updateResearchStatus(queryResponse, researchID);
+		//return researchObj.updateResearchStatus(queryResponse, researchID);
+		
+		if(queryResponse.equals("2")) {
+			return researchObj.updateResearchStatus("Stage 2 in progress", researchID);
+		}
+		else if(queryResponse.equals("3")) {
+			return researchObj.updateResearchStatus("Stage 3 in progress", researchID);
+		}
+		else if(queryResponse.equals("4")) {
+			return researchObj.updateResearchStatus("Stage 4 in progress", researchID);
+		}
+		else
+			return "Invalid stage...";
+		
+		
 		
 		
 		
