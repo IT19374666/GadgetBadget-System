@@ -157,7 +157,8 @@ public class Proposal {
 					
 			
 			//String query = "SELECT * FROM research";
-			String query = "SELECT * FROM proposal p,research res,researcher reschr where p.research_ID = res.research_ID and res.stakeholder_ID = reschr.stakeholder_ID AND reschr.interest_area='"+interest+"'";
+			//String query = "SELECT * FROM proposal p,research res,researcher reschr where p.research_ID = res.research_ID and res.stakeholder_ID = reschr.stakeholder_ID AND reschr.interest_area='"+interest+"'";
+			String query = "SELECT * FROM proposal p,research res,researcher reschr WHERE p.research_ID = res.research_ID and res.stakeholder_ID = reschr.stakeholder_ID ORDER BY reschr.interest_area='"+interest+"' desc";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			

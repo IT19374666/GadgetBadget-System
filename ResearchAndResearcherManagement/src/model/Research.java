@@ -243,7 +243,7 @@ public class Research {
 			else if(stage == "3")
 				status = "Stage 3 in progress.";
 			
-			else
+			else if(stage == "4")
 				status = "Stage 4 in progress.";				
 		
 			String query = "UPDATE research SET status=? WHERE research_ID=?";

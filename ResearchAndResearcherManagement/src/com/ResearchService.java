@@ -113,6 +113,7 @@ public class ResearchService {
 		return researchObj.sendResearchProgress(research_ID);
 	}
 	
+	//funded stage from funding body service
 	@GET
 	@Path("/getFundingStage")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -123,7 +124,7 @@ public class ResearchService {
 		
 		Client client = Client.create();
 		//System.out.println(researchID);
-		WebResource webResource = client.resource("http://localhost:8090/ResearchAndResearcherManagement/ProposalService/Proposal/getProposal/" +researchID);
+		WebResource webResource = client.resource("http://localhost:8090/FundsAndFundingbodyManagement/FundingBodyService/FundingBoady/readCurrentStage/" +researchID);
 		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
 		String queryResponse = response.getEntity(String.class);
 		//System.out.println(interestArea);
@@ -137,6 +138,7 @@ public class ResearchService {
 		
 		
 	}
+	//http://localhost:8090/FundsAndFundingbodyManagement/FundingBodyService/FundingBoady/readCurrentStage/{researchID
 	
 
 }

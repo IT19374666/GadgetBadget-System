@@ -101,7 +101,7 @@ public class ResearcherService {
 		
 		Client client = Client.create();
 		//System.out.println(interestArea);
-		WebResource webResource = client.resource("http://localhost:8090/ResearchAndResearcherManagement/ProposalService/Proposal/getProposal/" +interestArea);
+		WebResource webResource = client.resource("http://localhost:8090/FundsAndFundingbodyManagement/FundingBodyService/FundingBoady/readFbody/" +interestArea);
 		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
 		String queryResponse = response.getEntity(String.class);
 		//System.out.println(interestArea);
