@@ -40,6 +40,18 @@ public class FundsGivingService {
 	return output; 
 	}
 	
+	@GET
+    @Path("/readFundAmountForStage/{researchID}")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_HTML)
+    //call read all product method
+    public String readProductMinimumPrice( @PathParam(value = "researchID")String ResearchID)
+    {
+        return FundingDetailObj.readFundAmoutForOneStage(ResearchID);
+    }
+	
+	
+	
 	
 	//request from researcher to retrieve current completed stage(progress)
 	
@@ -72,29 +84,38 @@ public class FundsGivingService {
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String updateFundingDetails(@PathParam(value = "researchID")String ResearchID) 
 	{ 
-	/*//Convert the input string to a JSON object 
-	 JsonObject fBodyObject = new JsonParser().parse(FundingData).getAsJsonObject(); 
+	//Convert the input string to a JSON object 
+	 //JsonObject fBodyObject = new JsonParser().parse(FundingData).getAsJsonObject(); 
 	//Read the values from the JSON object
 	 
-	 String UpdatefundedStage = fBodyObject.get("currentStage").getAsString();
-	 ,String FundingData
-	*/
+	// String UpdatefundedStage = fBodyObject.get("currentStage").getAsString();
+	 
+
 	 
 	 	Client client = Client.create();
-		WebResource webResource = client.resource("http://localhost:8088/ResearchAndResearcherManagement/ResearchService/Researcher/readCurrentCompletedStage/"+ResearchID);
+		WebResource webResource = client.resource("http://localhost:8088/ResearchAndResearcherManagement/ResearchService/Research/getProgress/"+ResearchID);
 		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
-		String queryResponse = response.getEntity(String.class);
+		String currentCompletedStage = response.getEntity(String.class);
+		//String currentCompletedStage = queryResponse;
 		
-		if(queryResponse.equals("stage1")) {
+		Client client1 = Client.create();
+		WebResource webResource1 = client1.resource("http://localhost:8088/FundsAndFundingbodyManagement/FundingGivingService/FundsGiving/readFundAmountForStage/" +ResearchID);
+		ClientResponse response1 = webResource1.type("application/xml").get(ClientResponse.class);
+		String queryResponse1 = response1.getEntity(String.class);
+		double fundsForOneStage = Double.parseDouble(queryResponse1);
+		
+		
+		if(currentCompletedStage.equals("Stage1")) {
+			double totalFundedUptoNow = 2 * fundsForOneStage;
+			return FundingDetailObj.updateFunds(ResearchID, 2,totalFundedUptoNow);
 			
-			return FundingDetailObj.updateCurrentFudsStage(ResearchID, 2);
-			
-		}else if (queryResponse.equals("stage2")) {
-			
-			return FundingDetailObj.updateCurrentFudsStage(ResearchID, 3);
+		}else if (currentCompletedStage.equals("Stage2")) {
+			double totalFundedUptoNow = 3 * fundsForOneStage;
+			return FundingDetailObj.updateFunds(ResearchID, 3,totalFundedUptoNow);
 		}
-		else if (queryResponse.equals("stage3")) {
-			return FundingDetailObj.updateCurrentFudsStage(ResearchID, 4);
+		else if (currentCompletedStage.equals("Stage3")) {
+			double totalFundedUptoNow = 4 * fundsForOneStage;
+			return FundingDetailObj.updateFunds(ResearchID, 4,totalFundedUptoNow);
 		}
 		else {
 			
