@@ -92,7 +92,7 @@ public class ResearcherService {
 	//requesting funding bodies from fundsAndFundingBody Service
 	//passing Interest Area as parameters
 	@GET
-	@Path("/funding")
+	@Path("/fundingBody")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getProp(String Interest) {
