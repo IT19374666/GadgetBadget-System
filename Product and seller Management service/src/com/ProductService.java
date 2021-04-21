@@ -26,7 +26,7 @@ public class ProductService
 	
 	//Read All Product from the Product table
 	@GET
-	@Path("/") 
+	@Path("/read") 
 	@Produces(MediaType.TEXT_HTML) 
 	//call read all product method
 	public String readProduct() 
@@ -44,12 +44,10 @@ public class ProductService
 			@FormParam("ProductType") String ProductType, 
 			@FormParam("MinimumPrice") String MinimumPrice, 
 			@FormParam("ProductDescription") String ProductDescription,
-			@FormParam("AddDate") String AddDate,
 			@FormParam("ClosingDate") String ClosingDate,
-			@PathParam("SellerID") String SellerID,
-			@PathParam("ProductStatus") String ProductStatus)
+			@PathParam("SellerID") String SellerID)
 	{
-	 		String output = productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, AddDate, ClosingDate,SellerID,ProductStatus); 
+	 		String output = productObj.insertProduct(ProductName, ProductType, MinimumPrice, ProductDescription, ClosingDate,SellerID); 
 	 		return output;
 	}
 	

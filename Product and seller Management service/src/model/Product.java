@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.*; 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime; 
 
 public class Product {
 	
@@ -26,10 +28,12 @@ public class Product {
 	
 	////////////////Insert Product///////////////////////////////
 	
-	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate,String SellerID,String ProductStatus) 
+	public String insertProduct(String productName, String ProductType, String productPrice, String productDescription,String productEndDate,String SellerID) 
 	{ 
 		String output = "";
 		String productStatus = "Available";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
 
 		try
 		{ 
@@ -50,7 +54,7 @@ public class Product {
 			preparedStmt.setString(3, ProductType);
 			preparedStmt.setDouble(4, Double.parseDouble(productPrice)); 
 			preparedStmt.setString(5, productDescription);
-			preparedStmt.setString(6, productAddDate);
+			preparedStmt.setString(6, dtf.format(now));
 			preparedStmt.setString(7, productEndDate);
 			preparedStmt.setString(8, SellerID);
 			preparedStmt.setString(9, productStatus);
