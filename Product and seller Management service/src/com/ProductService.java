@@ -77,7 +77,7 @@ public class ProductService
 	
 	//Delete the product Details
 	@DELETE
-	@Path("/") 
+	@Path("/Delete") 
 	@Consumes(MediaType.APPLICATION_XML) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String deleteItem(String productData) 
