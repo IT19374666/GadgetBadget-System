@@ -135,7 +135,7 @@ public class Product {
 	
 	//////////////////////////////// Upadate Item //////////////////////////////
 	
-	public String updateProduct(String ProductID, String productName, String ProductType, String productPrice, String productDescription,String productAddDate,String productEndDate)
+	public String updateProduct(String ProductID, String productName, String ProductType, String productDescription, String productEndDate)
 	{ 
 		String output = ""; 
 		try
@@ -147,17 +147,15 @@ public class Product {
 			} 
 			
 			// create a prepared statement
-			String query = "UPDATE product SET `ProductName`=?,`ProductType`=?,`MinimumPrice`=?,`ProductDescription`=?,`AddDate`=?,`ClosingDate`=? WHERE `ProductID`=?"; 
+			String query = "UPDATE product SET `ProductName`=?,`ProductType`=?,`ProductDescription`=?,`ClosingDate`=? WHERE `ProductID`=?"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
 			
 			// binding values
 			preparedStmt.setString(1, productName); 
 			preparedStmt.setString(2, ProductType); 
-			preparedStmt.setDouble(3, Double.parseDouble(productPrice)); 
-			preparedStmt.setString(4, productDescription); 
-			preparedStmt.setString(5, productAddDate);
-			preparedStmt.setString(6, productEndDate);
-			preparedStmt.setInt(7, Integer.parseInt(ProductID)); 
+			preparedStmt.setString(3, productDescription); 
+			preparedStmt.setString(4, productEndDate);
+			preparedStmt.setInt(5, Integer.parseInt(ProductID)); 
 			
 			// execute the statement
 			preparedStmt.execute(); 

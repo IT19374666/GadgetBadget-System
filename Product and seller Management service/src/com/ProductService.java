@@ -54,7 +54,7 @@ public class ProductService
 	
 	//Update the product details  
 	@PUT
-	@Path("/") 
+	@Path("/Update") 
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String updateProduct(String ProductData) 
@@ -65,14 +65,12 @@ public class ProductService
 		//Read the values from the JSON object
 		String productID = pObject.get("ProductID").getAsString(); 
 		String productName = pObject.get("ProductName").getAsString(); 
-		String productType = pObject.get("ProductType").getAsString(); 
-		String productPrice = pObject.get("MinimumPrice").getAsString(); 
+		String productType = pObject.get("ProductType").getAsString();  
 		String productDescription = pObject.get("ProductDescription").getAsString();
-		String productAddDate = pObject.get("AddDate").getAsString();
 		String productEndDate = pObject.get("ClosingDate").getAsString();
 	 
 		//call the update method
-		String output = productObj.updateProduct(productID, productName, productType, productPrice, productDescription, productAddDate, productEndDate);
+		String output = productObj.updateProduct(productID, productName, productType, productDescription, productEndDate);
 		return output; 
 	}
 	
