@@ -171,11 +171,18 @@ public class Researcher {
 			
 			////////////////////////////////////////////////////////////
 			
+			/*query1 = delete from proposal where proposal_ID = (select proposal_ID from proposal
+			  where research_ID = (select research_ID from research
+								   where stakeholder_ID = ?));*/
+			
 			String query1 = "delete from proposal where proposal_ID = (select proposal_ID from proposal where research_ID = (select research_ID from research  where stakeholder_ID = ?));";
 															  
 			PreparedStatement preparedStmt1 = con.prepareStatement(query1);	
 			preparedStmt1.setInt(1, Integer.parseInt(resID));
 			
+			
+			/*query2 = delete from research where research_ID = (select research_ID from research
+			  where stakeholder_ID = ?);*/
 			
 			String query2 = "delete from research where research_ID = (select research_ID from research where stakeholder_ID = ?);";
 															  
