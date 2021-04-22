@@ -74,6 +74,15 @@ public class BidService {
 	 }
 	 
 	 
+	 @GET
+	 @Path("bidState/{itemId}")
+	 @Consumes(MediaType.APPLICATION_XML)
+	 @Produces(MediaType.TEXT_HTML)
+	 public String returnBisdtate(@PathParam("itemId") String itemId ) {
+		 return bidObj.returnBidState(itemId);
+		 
+		
+	 }
 	 
 	 
 	 
@@ -85,6 +94,7 @@ public class BidService {
 			 @FormParam(value = "customerId")String customerId,
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "sConditions")String sConditions,
+		
 			 @FormParam(value = "dueDate")String dueDate) {
 		 	System.out.println("IC" +itemCode);
 		 	System.out.println("Amount"+amount);

@@ -5,7 +5,6 @@ import model.Payment;
 //For generating  date
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.Future;
 
 
 //For REST Service
@@ -34,6 +33,7 @@ public class PaymentService {
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Produces(MediaType.TEXT_PLAIN)
 	 public String insertPayment(@FormParam(value = "itemCode") String itemCode,
+			 @FormParam(value = "bidId") String bidId,
 			 @FormParam(value = "customerId") String customerId,
 			 @FormParam(value = "amount") String amount,
 			 @FormParam(value = "pMethod") String pMethod,
@@ -43,21 +43,32 @@ public class PaymentService {
 		 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 		 	String paymentDate = formatter.format( new Date());
 		 	
-		 	
-		 	//Implementation of the interprocess communication for payment 
+		 	//Implementation of payment validation to check the state of the bids before making the payment
 		 	Client client = Client.create();
-		 
-		 	WebResource webResource = client.resource("http://localhost:8088/ProductAndSellerManagementService/ProductService/Product/updateStatus/" +itemCode +"/" +customerId);
-		 	ClientResponse response = webResource.type("application/xml").put(ClientResponse.class);
-		 	//System.out.println("Res :" +response);
-		 	
-		 	String queryRespose = response.getEntity(String.class);
-		 	
-		 	//System.out.println(queryRespose);
+			 
+		 	WebResource webResource= client.resource("http://localhost:8088/BuyerandPaymentManagement/BuyerandPaymentService/Bid/bidState/" + bidId);
+		 	ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
 		 	
 		 	
-		 	return paymentObj.insertPayment(itemCode,customerId, amount, pMethod, cardNo, paymentDate);
-		 
+		 	String accepted = response.getEntity(String.class);
+		 	System.out.println("State" +accepted);
+		 	if(accepted.equals("Yes") ) {
+		 	
+		 	
+			 	//Implementation of the interprocess communication for payment 
+			 	//Client requestClient = Client.create();
+			 
+			 	webResource = client.resource("http://localhost:8088/ProductAndSellerManagementService/ProductService/Product/updateStatus/" +itemCode +"/" +customerId);
+			 	response = webResource.type("application/xml").put(ClientResponse.class);
+			 	
+			 	
+			 	String queryRespose = response.getEntity(String.class);
+			 	
+			 	
+			 	return paymentObj.insertPayment(itemCode,bidId,customerId, amount, pMethod, cardNo, paymentDate);
+		 	}else {
+		 		return "Bid is not accepted";
+		 	}
 		 	
 	 }
 	 
