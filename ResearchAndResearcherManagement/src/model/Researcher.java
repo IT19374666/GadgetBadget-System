@@ -161,17 +161,36 @@ public class Researcher {
 			}
 			
 			//create a prepared statement 
-			String query = "DELETE FROM researcher WHERE stakeholder_ID=?";
+			//String query = "DELETE FROM researcher WHERE stakeholder_ID=?";
 			
-			PreparedStatement preparedStmt = con.prepareStatement(query);
+			//PreparedStatement preparedStmt = con.prepareStatement(query);
 			
-			preparedStmt.setInt(1, Integer.parseInt(resID));
+			//preparedStmt.setInt(1, Integer.parseInt(resID));
 			
-			preparedStmt.execute();
+			//preparedStmt.execute();
 			
 			////////////////////////////////////////////////////////////
 			
+			String query1 = "delete from proposal where proposal_ID = (select proposal_ID from proposal where research_ID = (select research_ID from research  where stakeholder_ID = ?));";
+															  
+			PreparedStatement preparedStmt1 = con.prepareStatement(query1);	
+			preparedStmt1.setInt(1, Integer.parseInt(resID));
 			
+			
+			String query2 = "delete from research where research_ID = (select research_ID from research where stakeholder_ID = ?);";
+															  
+			PreparedStatement preparedStmt2 = con.prepareStatement(query2);
+			preparedStmt2.setInt(1, Integer.parseInt(resID));
+			
+			
+			String query3 = "delete from researcher where stakeholder_ID = ?";
+			
+			PreparedStatement preparedStmt3 = con.prepareStatement(query3);
+			preparedStmt3.setInt(1, Integer.parseInt(resID));
+			
+			preparedStmt1.execute();
+			preparedStmt2.execute();
+			preparedStmt3.execute();
 			
 			///////////////////////////////////////////////////////////
 			con.close();

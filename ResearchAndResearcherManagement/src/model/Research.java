@@ -176,13 +176,32 @@ public class Research {
 			}
 			
 			//create a prepared statement 
-			String query = "DELETE FROM research WHERE research_ID=?";
+			//String query = "DELETE FROM research WHERE research_ID=?";
 			
-			PreparedStatement preparedStmt = con.prepareStatement(query);
+			//PreparedStatement preparedStmt = con.prepareStatement(query);
 			
-			preparedStmt.setInt(1, Integer.parseInt(ID));
+			//preparedStmt.setInt(1, Integer.parseInt(ID));
 			
-			preparedStmt.execute();
+			//preparedStmt.execute();
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			String query1 = "delete from proposal where proposal_ID = (select proposal_ID from proposal"
+					+ "										   where research_ID = ?);";
+			
+			PreparedStatement preparedStmt1 = con.prepareStatement(query1);
+			preparedStmt1.setInt(1, Integer.parseInt(ID));
+			
+			
+			String query2 = "delete from research where research_ID = ?;";
+			PreparedStatement preparedStmt2 = con.prepareStatement(query2);
+			preparedStmt2.setInt(1, Integer.parseInt(ID));
+			
+			preparedStmt1.execute();
+			preparedStmt2.execute();
+			
+			//////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			
+			
 			con.close();
 			
 			output = "Deleted successfully";
