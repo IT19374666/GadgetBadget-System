@@ -318,7 +318,8 @@ public class Product {
 			preparedStmt.executeUpdate();
 			con.close();
 			output = "Product Status Updated successfully";
-		}catch (Exception e) {
+		}catch (Exception e) 
+		  {
 			output = "Error while updating Product Status";
 			System.err.println(e.getMessage());
 	 	}
