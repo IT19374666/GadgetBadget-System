@@ -22,6 +22,9 @@ public class FundingService {
 	
 	FundingBoady FundingBoadyObj = new FundingBoady(); 
 	
+     //////return outputs to the client as response//////// @Consumes - input data type @Produces- output data type 
+	
+	//insert funding body details 
 	@POST
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
@@ -38,6 +41,7 @@ public class FundingService {
 	}
 	
 	
+	//read funding body details
 	@GET
 	@Path("/") 
 	@Produces(MediaType.TEXT_HTML) 
@@ -46,7 +50,7 @@ public class FundingService {
 	 return FundingBoadyObj.readFundingBodies() ; 
 	 }
 	
-	
+	//update funding body details
 	@PUT
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_JSON) 
@@ -69,7 +73,7 @@ public class FundingService {
 	
 	
 	
-	
+	//delete funding body
 	@DELETE
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_XML) 
@@ -112,34 +116,5 @@ public class FundingService {
 
 		return FundingBoadyObj.currentFundedStage(ResearchID) ;
 	}
-	
-	@POST
-	@Path("/insertFundsStartDetails") 
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
-	@Produces(MediaType.TEXT_PLAIN) 
-	public String insertFundsStartDetails(@FormParam("researchID") String researchID, 
-	 @FormParam("fundingBodyID") String fundingBodyID, 
-	 @FormParam("currentStage") String currentStage, 
-	 @FormParam("fundsForCurrentStage") String fundsForCurrentStage,
-	 @FormParam("totalFunds") String totalFunds, 
-	 @FormParam("description") String description)
-	{ 
-	 String output = FundingBoadyObj.insertFundingBody(researchID, fundingBodyID, currentStage, fundsForCurrentStage,totalFunds,description); 
-	return output; 
-	}
-	
-	
-	
-	
-	
-	
-	/*Client client = Client.create();
-	WebResource webResource = client.resource("");
-	ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
-	String queryResponse = response.getEntity(String.class);
-	
-	System.out.println(queryResponse);
-
-	return queryResponse;*/
 
 }

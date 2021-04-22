@@ -30,7 +30,7 @@ public class FundsGiving {
 
 
 	//insert funds table specific columns when a research is accepted by a funding body
-			public String insertStartupFundsDetails(String researchID,String fundingBodyID,String currentStage,String fundsForCurrentStage,String totalFunds, String description) {
+			public String insertStartupFundsDetails(String researchID,String fundingBodyID,String currentStage,String fundsForCurrentStage,String totalFunds, String description,String totalFundedAmount) {
 				
 				String output = "";
 				
@@ -41,7 +41,7 @@ public class FundsGiving {
 				 if (con == null) 
 				 {return "Error while connecting to the database for inserting funds details."; } 
 				 // create a prepared statement
-				 String query = "insert into funds (`FundID`,`researchID`,`fundingBodyID`,`currentStage`,`fundsForCurrentStage`,`totalFunds`,`description`)"+ "values (?,?,?,?,?,?,?)"; 
+				 String query = "insert into funds (`FundID`,`researchID`,`fundingBodyID`,`currentStage`,`fundsForCurrentStage`,`totalFunds`,`description`,`totalFundedAmount`)"+ "values (?,?,?,?,?,?,?,?)"; 
 			
 				 PreparedStatement preparedStmt = con.prepareStatement(query); 
 				 // binding values
@@ -53,6 +53,7 @@ public class FundsGiving {
 				 preparedStmt.setDouble(5, Double.parseDouble(fundsForCurrentStage));
 				 preparedStmt.setDouble(6, Double.parseDouble(totalFunds));
 				 preparedStmt.setString(7, description); 
+				 preparedStmt.setDouble(8, Double.parseDouble(totalFundedAmount));
 				 
 				 
 				
@@ -72,6 +73,9 @@ public class FundsGiving {
 				
 				
 			}
+			
+			
+			
 			
 			//update method
 	

@@ -24,6 +24,8 @@ public class FundsGivingService {
 
 	FundsGiving FundingDetailObj = new FundsGiving(); 
 	
+	//////return outputs to the client as response//////// @Consumes - input data type @Produces- output data type 
+	
 	
 	@POST
 	@Path("/insertFundsStartDetails") 
@@ -34,11 +36,15 @@ public class FundsGivingService {
 	 @FormParam("currentStage") String currentStage, 
 	 @FormParam("fundsForCurrentStage") String fundsForCurrentStage,
 	 @FormParam("totalFunds") String totalFunds, 
-	 @FormParam("description") String description)
+	 @FormParam("description") String description,
+	 @FormParam("totalFundedAmount") String totalFundedAmount)
+	
 	{ 
-	 String output = FundingDetailObj.insertStartupFundsDetails(researchID, fundingBodyID, currentStage, fundsForCurrentStage,totalFunds,description); 
+	 String output = FundingDetailObj.insertStartupFundsDetails(researchID, fundingBodyID, currentStage, fundsForCurrentStage,totalFunds,description,totalFundedAmount); 
 	return output; 
 	}
+	
+	
 	
 	@GET
     @Path("/readFundAmountForStage/{researchID}")
@@ -84,19 +90,12 @@ public class FundsGivingService {
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String updateFundingDetails(@PathParam(value = "researchID")String ResearchID) 
 	{ 
-	//Convert the input string to a JSON object 
-	 //JsonObject fBodyObject = new JsonParser().parse(FundingData).getAsJsonObject(); 
-	//Read the values from the JSON object
-	 
-	// String UpdatefundedStage = fBodyObject.get("currentStage").getAsString();
-	 
 
-	 
 	 	Client client = Client.create();
 		WebResource webResource = client.resource("http://localhost:8088/ResearchAndResearcherManagement/ResearchService/Research/getProgress/"+ResearchID);
 		ClientResponse response = webResource.type("application/xml").get(ClientResponse.class);
 		String currentCompletedStage = response.getEntity(String.class);
-		//String currentCompletedStage = queryResponse;
+	
 		
 		Client client1 = Client.create();
 		WebResource webResource1 = client1.resource("http://localhost:8088/FundsAndFundingbodyManagement/FundingGivingService/FundsGiving/readFundAmountForStage/" +ResearchID);
@@ -104,22 +103,27 @@ public class FundsGivingService {
 		String queryResponse1 = response1.getEntity(String.class);
 		double fundsForOneStage = Double.parseDouble(queryResponse1);
 		
-		
+		//research management micro-service return currently completed stage value as Stage1
 		if(currentCompletedStage.equals("Stage1")) {
 			double totalFundedUptoNow = 2 * fundsForOneStage;
 			return FundingDetailObj.updateFunds(ResearchID, 2,totalFundedUptoNow);
 			
+			//research management micro-service return currently completed stage value as Stage2	
 		}else if (currentCompletedStage.equals("Stage2")) {
 			double totalFundedUptoNow = 3 * fundsForOneStage;
 			return FundingDetailObj.updateFunds(ResearchID, 3,totalFundedUptoNow);
 		}
+		//research management micro-service return currently completed stage value as Stage3
 		else if (currentCompletedStage.equals("Stage3")) {
 			double totalFundedUptoNow = 4 * fundsForOneStage;
 			return FundingDetailObj.updateFunds(ResearchID, 4,totalFundedUptoNow);
 		}
-		else {
-			
-			return "Invalid completed stage!!!";
+		//research management micro-service return currently completed stage value as Stage4
+		else if(currentCompletedStage.equals("Stage4")){
+			return "Funding process completed for all 4 stages...";
+		}
+		else {	
+			return "Invalid completed stage!!! Maximum Stage can be Stage 4";
 		}
 
 	}

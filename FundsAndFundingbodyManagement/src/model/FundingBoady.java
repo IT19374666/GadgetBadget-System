@@ -67,7 +67,7 @@ public class FundingBoady {
 	}
 	
 	
-	//read funding body details
+	//read  all funding body details
 	
 	
 	public String readFundingBodies() 
@@ -164,7 +164,7 @@ public class FundingBoady {
 	}
 	
 	
-
+	//delete funding body details
 	
 	public String deleteFundingBody(String fundingBodyID) 
 	 { 
@@ -182,7 +182,7 @@ public class FundingBoady {
 	 // execute the statement
 	 preparedStmt.execute(); 
 	 con.close(); 
-	 output = "Deleted successfully"; 
+	 output = "Deleted FundingID = "+fundingBodyID+ " successfully"; 
 	 } 
 	 catch (Exception e) 
 	 { 
@@ -192,7 +192,7 @@ public class FundingBoady {
 	 return output; 
 	 }
 	
-	//method for retrieve all funding bodies details when researcher request
+	//method for retrieve all funding bodies details when researcher request according to the interest area
 	
 	public String RequestReadFundingBodies(String InterestArea) 
 	 { 
@@ -327,55 +327,6 @@ public class FundingBoady {
 		 return output; 
 		
 	}
-	
-	//insert funds table specific columns when a research is accepted by a funding body
-		public String insertStartupFundsDetails(String researchID,String fundingBodyID,String currentStage,String fundsForCurrentStage,String totalFunds, String description) {
-			
-			String output = "";
-			
-			try
-			 { 
-			 Connection con = connect(); 
-			
-			 if (con == null) 
-			 {return "Error while connecting to the database for inserting funds details."; } 
-			 // create a prepared statement
-			 String query = "insert into funds (`researchID`,`fundingBodyID`,`currentStage`,`fundsForCurrentStage`,`totalFunds`,`description`)"+ "values (?,?,?,?,?,?)"; 
-		
-			 PreparedStatement preparedStmt = con.prepareStatement(query); 
-			 // binding values
-			 preparedStmt.setInt(1, 0); 
-			
-			 preparedStmt.setInt(2, Integer.parseInt(researchID)); 
-			 preparedStmt.setInt(3, Integer.parseInt(fundingBodyID)); 
-			 preparedStmt.setInt(4, Integer.parseInt(currentStage));;
-			 preparedStmt.setDouble(5, Double.parseDouble(fundsForCurrentStage));
-			 preparedStmt.setDouble(6, Double.parseDouble(totalFunds));
-			 preparedStmt.setString(2, description); 
-			 
-			 
-			
-			 //execute statement
-			 preparedStmt.execute(); 
-			 con.close(); 
-			 output = "Inserted funds details for start up resaerches successfully"; 
-			 } 
-			 catch (Exception e) 
-			 { 
-			 output = "Error while inserting the funds details for start up resaerches."; 
-			 System.err.println(e.getMessage()); 
-			 }
-			 
-			 
-			return output;
-			
-			
-		}
-		
-	
-	
-	
-	
 
-	
+
 }
